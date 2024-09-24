@@ -1,163 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Money Pots with Remaining Amount</title>
-    <link rel="stylesheet" href="styling.css">
-    <link rel ="icon" type="image/x-icon" href="images/money-bag.png">
-    <!-- <script src="script.js"></script> -->
-</head>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Custom Money Pots with Remaining Amount</title>
+        <link rel="stylesheet" href="styling.css">
+        <link rel ="icon" type="image/x-icon" href="images/money-bag.png">
+    </head>
 <body>
-    <div class="container">
-        <div class="sidebar" style="width: 20%;">
-            <h3>Budget Planner</h3>
-            <label for="total-amount">Total Amount (£)</label>
-            <input type="number" id="total-amount" placeholder="Total (£)" min="0" value="2000">
-          
-            <label for="pot-title">Budget Title</label>
-            <input type="text" id="pot-title" placeholder="My budget">
-    
-            <label for="item-name">Item Name</label>
-            <input type="text" id="item-name" placeholder="e.g. Mortgage">
-    
-            <label for="item-amount">Item Amount (£)</label>
-            <input type="number" id="item-amount" placeholder="Amount (£)" min="0">
-    
-            <label for="item-color">Item Color</label>
-            <input type="color" id="item-color" value="#4CAF50">
-    
-            <button id="add-item">Add Item</button>
-    
-            <h4>Items Added:</h4>
-            <ul id="item-list"></ul>
-        </div>
-    
-        <div class="content">
-            <div class="header-container" style="margin-bottom: 0;">
-                <h5 style="font-size: 24px;" id="title-display"></h5>
-            </div>
-            <div class="total-container">
-                <h5 style="font-size: 16px;" id="total-display"></h5>
-                <div class="controls">
-                    <label>
-                        <input class="checkbox" type="checkbox" id="toggle-labels" checked> Show Labels
-                    </label>
-                    <label>
-                        <input class="checkbox" type="checkbox" id="toggle-remaining" checked> Show Remaining
-                    </label>
-                </div>
-            </div>
-            <div id="money-bar"></div>
-        </div>
+
+<div class="container">
+    <div class="sidebar">
+        <h3>Budget Planner</h3>
+        <label for="total-amount">Total Amount (£)</label>
+        <input type="number" id="total-amount" placeholder="Total (£)" min="0" value="2000">
+      
+        <label for="pot-title">Budget Title</label>
+        <input type="text" id="pot-title" placeholder="My budget">
+
+        <label for="item-name">Item Name</label>
+        <input type="text" id="item-name" placeholder="e.g. Mortgage">
+
+        <label for="item-amount">Item Amount (£)</label>
+        <input type="number" id="item-amount" placeholder="Amount (£)" min="0">
+
+        <label for="item-color">Item Color</label>
+        <input type="color" id="item-color" value="#4CAF50">
+
+        <label for="item-sort">Item Sort Order</label>
+        <input type="number" id="item-sort" placeholder="Sort Order (e.g. 1)" min="1">
+
+        <button id="add-item">Add Item</button>
+
+        <h4>Items Added:</h4>
+        <ul id="item-list"></ul>
     </div>
 
-    <script>
-        let potTtitle = "";
-        let totalAmount = 2000;
-        let items = [];
-        const totalDisplay = document.getElementById('total-display');
-        const titleDisplay = document.getElementById('title-display');
-        const moneyBar = document.getElementById('money-bar');
-        const itemList = document.getElementById('item-list');
-        const totalInput = document.getElementById('total-amount');
-        const titleInput = document.getElementById('pot-title');
-        const toggleLabelsCheckbox = document.getElementById('toggle-labels');
-        const toggleRemainingCheckbox = document.getElementById('toggle-remaining');
+    <div class="content">
+        <div class="header-container">
+            <h5 style="font-size: 24px;" id="title-display"></h5>
+        </div>
+        <div class="total-container">
+            <h5 style="font-size: 16px;" id="total-display"></h5>
+            <div class="controls">
+                <label>
+                    <input type="checkbox" id="toggle-labels" checked> Show Labels
+                </label>
+                <label>
+                    <input type="checkbox" id="toggle-remaining" checked> Show Remaining
+                </label>
+            </div>
+        </div>
+        <div id="money-bar"></div>
+    </div>
+</div>
 
-        // Update the display and bars
-        const updateDisplay = () => {
-            moneyBar.innerHTML = '';
+<script>
+    let potTitle = "";
+    let totalAmount = 2000;
+    let items = [];
+    let draggedIndex = null;  // To keep track of the dragged bar
+    const totalDisplay = document.getElementById('total-display');
+    const titleDisplay = document.getElementById('title-display');
+    const moneyBar = document.getElementById('money-bar');
+    const itemList = document.getElementById('item-list');
+    const totalInput = document.getElementById('total-amount');
+    const titleInput = document.getElementById('pot-title');
+    const toggleLabelsCheckbox = document.getElementById('toggle-labels');
+    const toggleRemainingCheckbox = document.getElementById('toggle-remaining');
 
-            let totalSpent = items.reduce((sum, item) => sum + item.amount, 0);
-            
-            titleDisplay.innerText = potTtitle;
-            
-            totalDisplay.innerText = `Total = £${totalSpent} out of £${totalAmount}`;
+    // Update the display and sort the items
+    const updateDisplay = () => {
+        moneyBar.innerHTML = '';
+        itemList.innerHTML = '';
 
-            let widthMultiplier = toggleRemainingCheckbox.checked ? 1 : totalAmount / totalSpent;
+        let totalSpent = items.reduce((sum, item) => sum + item.amount, 0);
+        titleDisplay.innerText = potTitle;
+        totalDisplay.innerText = `Total = £${totalSpent} out of £${totalAmount}`;
 
-            items.forEach(item => {
-                const potDiv = document.createElement('div');
-                const itemWidthPercentage = (item.amount / totalAmount) * 100 * widthMultiplier;
+        // Sort items by the sort order
+        const sortedItems = items.slice().sort((a, b) => a.sort - b.sort);
 
-                potDiv.style.width = itemWidthPercentage + '%';
-                potDiv.classList.add('money-pot');
-                potDiv.style.backgroundColor = item.color;
+        // Adjust total for remaining amount if the toggle is checked
+        let availableWidth = 100;  // We'll use this as the total width (100%)
 
-                const labelDiv = document.createElement('div');
-                labelDiv.classList.add('actual-value');
-                labelDiv.innerText = `${item.name} (£${item.amount})`;
-                
-                if (!toggleLabelsCheckbox.checked) {
-                    labelDiv.style.display = 'none';
-                }
-                
-                potDiv.appendChild(labelDiv);
-                moneyBar.appendChild(potDiv);
+        // If 'Show Remaining' is unchecked, distribute 100% width among the items
+        if (!toggleRemainingCheckbox.checked || totalSpent >= totalAmount) {
+            availableWidth = 100;
+        } else {
+            availableWidth = (totalSpent / totalAmount) * 100;
+        }
+
+        sortedItems.forEach((item, index) => {
+            const potDiv = document.createElement('div');
+            const itemWidthPercentage = (item.amount / totalSpent) * availableWidth;
+
+            potDiv.style.width = itemWidthPercentage + '%';
+            potDiv.classList.add('money-pot');
+            potDiv.style.backgroundColor = item.color;
+            potDiv.draggable = true; 
+            potDiv.setAttribute('data-index', index);
+
+            const labelDiv = document.createElement('div');
+            labelDiv.classList.add('actual-value');
+            labelDiv.innerText = `${item.name} (£${item.amount})`;
+
+            if (!toggleLabelsCheckbox.checked) {
+                labelDiv.style.display = 'none';
+            }
+            potDiv.appendChild(labelDiv);
+            moneyBar.appendChild(potDiv);
+
+            const deleteBtn = document.createElement('span');
+            deleteBtn.classList.add('delete-btn');
+            deleteBtn.innerHTML = 'X';
+            deleteBtn.onclick = () => {
+                items.splice(index, 1); 
+                updateDisplay();
+            };
+
+            const listItem = document.createElement('li');
+            listItem.innerText = `${item.name} (£${item.amount})`;
+            listItem.appendChild(deleteBtn);
+            itemList.appendChild(listItem);
+
+            // Drag events
+            potDiv.addEventListener('dragstart', (e) => {
+                draggedIndex = index;
+                e.dataTransfer.effectAllowed = "move";
+                potDiv.style.opacity = "0.5";
             });
 
-            const remainingAmount = totalAmount - totalSpent;
-            if (remainingAmount > 0 && toggleRemainingCheckbox.checked) {
-                const remainingDiv = document.createElement('div');
-                const remainingWidthPercentage = (remainingAmount / totalAmount) * 100;
-                remainingDiv.style.width = remainingWidthPercentage + '%';
-                remainingDiv.classList.add('money-pot', 'remaining');
-                
-                const labelDiv = document.createElement('div');
-                labelDiv.classList.add('actual-value');
-                labelDiv.innerText = `Remaining (£${remainingAmount})`;
-                
-                if (!toggleLabelsCheckbox.checked) {
-                    labelDiv.style.display = 'none';
+            potDiv.addEventListener('dragend', () => {
+                potDiv.style.opacity = "1";
+            });
+
+            potDiv.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+            });
+
+            potDiv.addEventListener('drop', (e) => {
+                const targetIndex = parseInt(e.target.getAttribute('data-index'));
+
+                // Swap the sort values to change positions
+                if (draggedIndex !== null && draggedIndex !== targetIndex) {
+                    [items[draggedIndex].sort, items[targetIndex].sort] = [items[targetIndex].sort, items[draggedIndex].sort];
+                    updateDisplay(); 
                 }
-                
-                remainingDiv.appendChild(labelDiv);
-                moneyBar.appendChild(remainingDiv);
+                draggedIndex = null;
+            });
+        });
+
+        // Add the remaining bar if there's remaining amount and 'Show Remaining' is checked
+        const remainingAmount = totalAmount - totalSpent;
+        if (remainingAmount > 0 && toggleRemainingCheckbox.checked) {
+            const remainingDiv = document.createElement('div');
+            const remainingWidthPercentage = (remainingAmount / totalAmount) * 100;
+            remainingDiv.style.width = remainingWidthPercentage + '%';
+            remainingDiv.classList.add('money-pot', 'remaining');
+
+            const labelDiv = document.createElement('div');
+            labelDiv.classList.add('actual-value');
+            labelDiv.innerText = `Remaining (£${remainingAmount})`;
+            if (!toggleLabelsCheckbox.checked) {
+                labelDiv.style.display = 'none';
             }
-        };
 
-        document.getElementById('add-item').addEventListener('click', () => {
-            const itemName = document.getElementById('item-name').value;
-            const itemAmount = parseFloat(document.getElementById('item-amount').value);
-            const itemColor = document.getElementById('item-color').value;
+            remainingDiv.appendChild(labelDiv);
+            moneyBar.appendChild(remainingDiv);
+        }
+    };
 
-            if (itemName && !isNaN(itemAmount) && itemAmount > 0) {
-                items.push({ name: itemName, amount: itemAmount, color: itemColor });
+    // Handle adding new items
+    document.getElementById('add-item').addEventListener('click', () => {
+        const itemName = document.getElementById('item-name').value;
+        const itemAmount = parseFloat(document.getElementById('item-amount').value);
+        const itemColor = document.getElementById('item-color').value;
+        const itemSort = parseInt(document.getElementById('item-sort').value) || items.length + 1;
 
-                const li = document.createElement('li');
-                li.innerText = `${itemName} (£${itemAmount})`;
-                itemList.appendChild(li);
-
-                document.getElementById('item-name').value = '';
-                document.getElementById('item-amount').value = '';
-                document.getElementById('item-color').value = '#4CAF50';
-
-                updateDisplay();
-            } else {
-                alert('Please enter valid item details.');
-            }
-        });
-
-        totalInput.addEventListener('change', () => {
-            totalAmount = parseFloat(totalInput.value) || 0;
+        if (itemName && !isNaN(itemAmount) && itemAmount > 0) {
+            items.push({ name: itemName, amount: itemAmount, color: itemColor, sort: itemSort });
+            document.getElementById('item-name').value = '';
+            document.getElementById('item-amount').value = '';
+            document.getElementById('item-color').value = '#4CAF50';
+            document.getElementById('item-sort').value = '';
             updateDisplay();
-        });
+        } else {
+            alert('Please enter valid item details.');
+        }
+    });
 
-        titleInput.addEventListener('input', () => {
-            potTtitle = titleInput.value;
-            updateDisplay();
-        });
-
-        toggleLabelsCheckbox.addEventListener('change', () => {
-            updateDisplay();
-        });
-
-        toggleRemainingCheckbox.addEventListener('change', () => {
-            updateDisplay();
-        });
-
+    totalInput.addEventListener('change', () => {
+        totalAmount = parseFloat(totalInput.value) || 0;
         updateDisplay();
-    </script>
+    });
+
+    titleInput.addEventListener('input', () => {
+        potTitle = titleInput.value;
+        updateDisplay();
+    });
+
+    toggleLabelsCheckbox.addEventListener('change', updateDisplay);
+    toggleRemainingCheckbox.addEventListener('change', updateDisplay);
+
+    updateDisplay();
+</script>
+
 </body>
+</html>

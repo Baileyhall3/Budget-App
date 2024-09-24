@@ -47,14 +47,19 @@ body {
     border: 2px solid #000;
     border-radius: 10px;
     overflow: hidden;
-    background-color: #ffffff; 
+    background-color: #ffffff;
 }
 
 .money-pot {
     height: 100%;
     display: flex;
-    position: relative; 
-    transition: width 2s ease-in-out, background-color 2s ease-in-out; /* Add transition for smooth animation */
+    position: relative;
+    transition: width 0.5s;
+    cursor: grab; /* Hand cursor when hovering */
+}
+
+.money-pot:active {
+    cursor: grabbing; /* Grabbing cursor when clicked */
 }
 
 .actual-value {
@@ -70,13 +75,27 @@ body {
 }
 
 .money-pot:not(:first-child) {
-    margin-left: 2px; /* Adjust separator width here */
+    margin-left: 2px;
 }
 
 .remaining {
     background-color: #A9A9A9;
 }
 
-.checkbox {
-    user-select: none;
+.delete-btn {
+    cursor: pointer;
+    color: red;
+    margin-left: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
 }
