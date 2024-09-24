@@ -4,63 +4,32 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Custom Money Pots with Remaining Amount</title>
+        <title>Budget Planner</title>
         <link rel="stylesheet" href="styling.css">
         <link rel ="icon" type="image/x-icon" href="images/money-bag.png">
+        <script src="scripts/navbar-loader.js" defer></script>
     </head>
 <body>
-
-<div class="container">
-    <div class="sidebar">
-        <h3>Budget Planner</h3>
-        <label for="total-amount">Total Amount (£)</label>
-        <input type="number" id="total-amount" placeholder="Total (£)" min="0" value="2000">
-      
-        <label for="pot-title">Budget Title</label>
-        <input type="text" id="pot-title" placeholder="My budget">
-
-        <label for="item-name">Item Name</label>
-        <input type="text" id="item-name" placeholder="e.g. Mortgage">
-
-        <label for="item-amount">Item Amount (£)</label>
-        <input type="number" id="item-amount" placeholder="Amount (£)" min="0">
-
-        <label for="item-color">Item Color</label>
-        <input type="color" id="item-color" value="#4CAF50">
-
-        <label for="item-sort">Item Sort Order</label>
-        <input type="number" id="item-sort" placeholder="Sort Order (e.g. 1)" min="1">
-
-        <button id="add-item">Add Item</button>
-
-        <h4>Items Added:</h4>
-        <ul id="item-list"></ul>
-    </div>
-
-    <div class="content">
-        <div class="header-container">
-            <h5 style="font-size: 24px;" id="title-display"></h5>
-        </div>
-        <div class="total-container">
-            <h5 style="font-size: 16px;" id="total-display"></h5>
-            <div class="controls">
-                <label>
-                    <input type="checkbox" id="toggle-labels" checked> Show Labels
-                </label>
-                <label>
-                    <input type="checkbox" id="toggle-remaining" checked> Show Remaining
-                </label>
+<div id="navbar-placeholder"></div>
+<div class="wrapper">
+    <div class="container">
+        <div class="content">
+            <div class="header-container">
+                <h5 style="font-size: 24px;" id="title-display">Dashboard</h5>
             </div>
         </div>
-        <div id="money-bar"></div>
     </div>
 </div>
 
+
 <script>
+    // Initialize variables
     let potTitle = "";
     let totalAmount = 2000;
     let items = [];
-    let draggedIndex = null;  // To keep track of the dragged bar
+    let draggedIndex = null;
+
+    // Get DOM elements
     const totalDisplay = document.getElementById('total-display');
     const titleDisplay = document.getElementById('title-display');
     const moneyBar = document.getElementById('money-bar');
@@ -70,7 +39,30 @@
     const toggleLabelsCheckbox = document.getElementById('toggle-labels');
     const toggleRemainingCheckbox = document.getElementById('toggle-remaining');
 
-    // Update the display and sort the items
+    // Function to update localStorage
+    const saveToLocalStorage = () => {
+        const data = {
+            potTitle,
+            totalAmount,
+            items
+        };
+        localStorage.setItem('budgetData', JSON.stringify(data));
+    };
+
+    // Function to load data from localStorage
+    const loadFromLocalStorage = () => {
+        const savedData = localStorage.getItem('budgetData');
+        if (savedData) {
+            const { potTitle: savedTitle, totalAmount: savedTotal, items: savedItems } = JSON.parse(savedData);
+            potTitle = savedTitle || "";
+            totalAmount = savedTotal || 2000;
+            items = savedItems || [];
+            totalInput.value = totalAmount;
+            titleInput.value = potTitle;
+        }
+    };
+
+    // Function to update the display and sort items
     const updateDisplay = () => {
         moneyBar.innerHTML = '';
         itemList.innerHTML = '';
@@ -118,6 +110,7 @@
             deleteBtn.onclick = () => {
                 items.splice(index, 1); 
                 updateDisplay();
+                saveToLocalStorage(); // Save after removing item
             };
 
             const listItem = document.createElement('li');
@@ -148,6 +141,7 @@
                 if (draggedIndex !== null && draggedIndex !== targetIndex) {
                     [items[draggedIndex].sort, items[targetIndex].sort] = [items[targetIndex].sort, items[draggedIndex].sort];
                     updateDisplay(); 
+                    saveToLocalStorage(); // Save after reordering
                 }
                 draggedIndex = null;
             });
@@ -187,25 +181,34 @@
             document.getElementById('item-color').value = '#4CAF50';
             document.getElementById('item-sort').value = '';
             updateDisplay();
+            saveToLocalStorage(); // Save after adding item
         } else {
             alert('Please enter valid item details.');
         }
     });
 
+    // Event listener for total amount input
     totalInput.addEventListener('change', () => {
         totalAmount = parseFloat(totalInput.value) || 0;
         updateDisplay();
+        saveToLocalStorage(); // Save after changing total
     });
 
+    // Event listener for budget title input
     titleInput.addEventListener('input', () => {
         potTitle = titleInput.value;
         updateDisplay();
+        saveToLocalStorage(); // Save after changing title
     });
 
+    // Event listeners for checkbox changes
     toggleLabelsCheckbox.addEventListener('change', updateDisplay);
     toggleRemainingCheckbox.addEventListener('change', updateDisplay);
 
+    // Load initial data from localStorage and update the display
+    loadFromLocalStorage();
     updateDisplay();
+
 </script>
 
 </body>

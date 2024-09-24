@@ -1,7 +1,107 @@
 body {
     font-family: Arial, sans-serif;
-    display: flex;
+    margin: 0; 
+    padding: 0;
 }
+.wrapper {
+    display: flex;
+    justify-content: center;
+    min-height: calc(100vh - 60px); /* Full height minus the navbar */
+    background: rgba(255, 253, 253, 0.4);
+    padding-bottom: 25px;
+    margin-top: 80px;
+}
+
+.home_body {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgb(69, 228, 7);
+    z-index: 100;
+    padding: 20px 0;
+    height: 60px;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.nav.hidden {
+    top: -100px;
+}
+
+.nav-logo p {
+    color: #000000;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.nav-logo a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.hamburger {
+    display: none; 
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu ul {
+    margin: 0;
+    list-style: none;
+    padding-right: 250px;
+}
+
+.nav-menu ul li {
+    margin-left: 20px;
+    display: inline-block;
+    position: relative;
+}
+
+.nav-menu ul li .link {
+    text-decoration: none;
+    font-weight: 500;
+    color: #fff;
+    padding-bottom: 5px;
+}
+
+.nav-menu li a:hover {
+    color: #c27fff;
+    transition: .3s ease-out;
+}
+
+.link.active {
+    color: #c27fff;
+    border-bottom: 2px solid #8A2BE2FF;
+}
+
+.hamburger {
+    display: none;
+    cursor: pointer;
+    font-size: 30px;
+    color: #c27fff;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
 .container {
     display: flex;
     width: 100%;
@@ -9,9 +109,11 @@ body {
 }
 
 .sidebar {
-    width: 200px;
-    padding: 40px;
-    border-right: 1px solid #ddd;
+    width: 200px; /* Initial sidebar width */
+    transition: width 0.2s;
+    min-width: 200px; /* Minimum width for the sidebar */
+    max-width: 500px; /* Maximum width for the sidebar */
+    margin-top: 40px;
 }
 .sidebar h3 {
     margin-top: 0;
@@ -22,6 +124,36 @@ body {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+.divider {
+    width: 10px; /* Thicker divider */
+    cursor: col-resize;
+    background-color: #ccc;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 50px;
+}
+
+.divider:hover {
+    background-color: #aaa;
+}
+
+.divider .arrow-left,
+.divider .arrow-right {
+    font-size: 12px;
+    color: #333;
+    position: absolute;
+}
+
+.divider .arrow-left {
+    left: 2px;
+}
+
+.divider .arrow-right {
+    right: 2px;
 }
 
 .content {
@@ -55,11 +187,11 @@ body {
     display: flex;
     position: relative;
     transition: width 0.5s;
-    cursor: grab; /* Hand cursor when hovering */
+    cursor: grab;
 }
 
 .money-pot:active {
-    cursor: grabbing; /* Grabbing cursor when clicked */
+    cursor: grabbing;
 }
 
 .actual-value {
