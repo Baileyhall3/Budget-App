@@ -7,16 +7,16 @@ document.addEventListener("DOMContentLoaded", function () {
             var currentPath = window.location.pathname;
 
             var homeLink = document.getElementById("home-link");
-            var aboutLink = document.getElementById("pots-link");
-            var artistsLink = document.getElementById("budgets-link");
+            var potsLink = document.getElementById("pots-link");
+            var budgetLink = document.getElementById("budget-link");
 
             // Determine which link should be active based on the current page
             if (currentPath.includes("index.html")) {
                 homeLink.classList.add("active");
             } else if (currentPath.includes("pots.html")) {
-                aboutLink.classList.add("active");
-            } else if (currentPath.includes("budgets.html")) {
-                artistsLink.classList.add("active");
+                potsLink.classList.add("active");
+            } else if (currentPath.includes("budget.html")) {
+                budgetLink.classList.add("active");
             } 
 
             // var hamburger = document.getElementById("hamburger");
