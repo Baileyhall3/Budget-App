@@ -1,25 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Budget Planner</title>
-        <link rel="stylesheet" href="styling.css">
-        <link rel ="icon" type="image/x-icon" href="images/money-bag.png">
-        <script src="scripts/navbar-loader.js" defer></script>
-    </head>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Dashboard</title>
+    <link rel="stylesheet" href="styling.css">
+    <link rel="icon" type="image/x-icon" href="images/money-bag.png">
+    <script src="scripts/navbar-loader.js" defer></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Grey background for total value */
+        .total-value-container {
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            margin-top: 40px;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 60px;
+        }
+
+        /* Chart container styles */
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            width: 50%;
+        }
+
+        /* Form styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="color"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* List styling */
+        #budget-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #budget-list li {
+            padding: 8px 0;
+            font-size: 18px;
+        }
+    </style>
+</head>
 <body>
-<div id="navbar-placeholder"></div>
-<div class="wrapper">
-    <div class="container">
-        <div class="content">
-            <div class="header-container">
-                <h5 style="font-size: 24px;" id="title-display">This is the pots page</h5>
-            </div>
+    <!-- Grey div displaying total budget value -->
+    <div id="navbar-placeholder"></div>
+    <div class="content-wrapper">
+        <div class="total-value-container">
+            <h5 style="font-size: 18px;" id="title-display">My Budget Title</h5>
+            <h5 style="font-size: 24px; color: #45a049;" id="total-display">£2000</h5>
         </div>
+
+        <div class="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <!-- Form to add budget items -->
+        <form id="budget-form">
+            <input type="number" id="total-amount" placeholder="Total (£)" min="0">
+            <input type="text" id="pot-title" placeholder="My budget">
+            <input type="text" id="item-name" placeholder="Item Name" required>
+            <input type="number" id="item-value" placeholder="Item Value (£)" required min="0">
+            <input type="color" id="item-color" placeholder="Item Color" required>
+            <!-- <button type="submit">Add Item</button> -->
+            <button type="button" id="add-item-btn">Add Item</button>
+        </form>
+
+        <!-- Display the added budget items -->
+        <ul id="budget-list"></ul>
     </div>
-</div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+
+    <script>
+        // Initialize data array
+        const budgetItems = [];
+        let totalAmount = 2000; // Default total amount
+        let potTitle = "My Budget Title"; // Default title
+        let chart;
+    
+        // Create initial chart
+        function createChart() {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            
+            chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        backgroundColor: [],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    const label = chart.data.labels[tooltipItem.dataIndex];
+                                    const value = chart.data.datasets[0].data[tooltipItem.dataIndex];
+                                    return `${label}: £${value.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    
+        // Function to update the chart dynamically
+        function updateChart() {
+            // Extract labels, values, and colors from the budgetItems array
+            const labels = budgetItems.map(item => item.name);
+            const dataValues = budgetItems.map(item => item.value); // Use actual £ values
+            const colors = budgetItems.map(item => item.color);
+    
+            // Calculate remaining value in £
+            const totalUsed = dataValues.reduce((acc, val) => acc + val, 0);
+            const remainingValue = totalAmount - totalUsed;
+    
+            // If there's remaining value, add it to the chart with grey color
+            if (remainingValue > 0) {
+                labels.push('Remaining');
+                dataValues.push(remainingValue);
+                colors.push('rgb(200, 200, 200)');
+            }
+    
+            // Update chart data without recreating the chart
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = dataValues;
+            chart.data.datasets[0].backgroundColor = colors;
+    
+            // Update the chart with new data and animations
+            chart.update();
+        }
+    
+        // Function to update the title and total display
+        function updateDisplay() {
+            // Update title display
+            const titleDisplay = document.getElementById('title-display');
+            titleDisplay.textContent = potTitle;
+    
+            // Update total display
+            const totalDisplay = document.getElementById('total-display');
+            totalDisplay.textContent = `£${totalAmount.toLocaleString()}`;
+        }
+    
+        // Add event listener for form submission
+        document.getElementById('add-item-btn').addEventListener('click', function (e) {
+            e.preventDefault();
+    
+            // Get form values
+            const itemName = document.getElementById('item-name').value;
+            const itemValue = parseFloat(document.getElementById('item-value').value);
+            const itemColor = document.getElementById('item-color').value;
+    
+            // Validate the total item value
+            const totalUsed = budgetItems.reduce((acc, item) => acc + item.value, 0) + itemValue;
+            if (totalUsed > totalAmount) {
+                alert('Total budget exceeds available amount. Adjust values.');
+                return;
+            }
+    
+            // Add the new budget item
+            budgetItems.push({
+                name: itemName,
+                value: itemValue,
+                color: itemColor
+            });
+    
+            // Clear form fields after adding
+            document.getElementById('item-name').value = '';
+            document.getElementById('item-value').value = '';
+            document.getElementById('item-color').value = '#000000';
+    
+            // Update the chart smoothly
+            updateChart();
+        });
+    
+        // Add event listener to update total amount and chart
+        document.getElementById('total-amount').addEventListener('change', function () {
+            totalAmount = parseFloat(this.value) || 2000; // Use input value or default
+            updateChart();
+            updateDisplay(); // Update total display when total amount changes
+        });
+    
+        // Add event listener to update pot title display
+        document.getElementById('pot-title').addEventListener('input', function () {
+            potTitle = this.value || "My Budget Title"; // Use input value or default
+            updateDisplay(); // Update title display
+        });
+    
+        // Initial chart render on page load
+        createChart();
+        updateChart();
+        updateDisplay(); // Initialize display on load
+    </script>
+    
+
 
 </body>
 </html>

@@ -3,11 +3,21 @@ body {
     margin: 0; 
     padding: 0;
 }
+
+h5 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+p {
+    color: rgb(131 131 131);
+}
+
 .wrapper {
     display: flex;
     justify-content: center;
     min-height: calc(100vh - 60px); /* Full height minus the navbar */
-    background: rgba(255, 253, 253, 0.4);
+    background: rgba(0, 255, 42, 0.4);
     padding-bottom: 25px;
     margin-top: 80px;
 }
