@@ -23,11 +23,11 @@
         .total-value-container {
             width: 100%;
             text-align: center;
-            padding: 20px;
+            /* padding: 20px; */
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 30px;
-            margin-top: 40px;
+            /* margin-top: 40px; */
         }
 
         .flex-container {
@@ -63,13 +63,43 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
-            /* width: 100%;  */
+            transition: transform 0.6s ease, box-shadow 0.6s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .side-container:hover {
+            transform: scale(1.05); 
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
         }
 
         .side-container-group {
             display: flex;
             flex-direction: column; 
             width: 25%; 
+        }
+
+        .side-container-sub-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%; /* Take full width */
+        }
+
+        .sub-row {
+            display: flex;
+            justify-content: space-between; 
+            gap: 20px; 
+            margin-bottom: 20px;
+        }
+
+        .sub-row .side-container {
+            flex: 1; 
+            margin-bottom: 0;
+        }
+
+        .side-container canvas {
+            width: 100%;
+            height: auto;
         }
 
         form {
@@ -169,6 +199,19 @@
             overflow: hidden;
         }
 
+        .transaction {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-top: 1px solid rgb(131 131 131);
+        }
+
+        #alerts-list {
+            overflow: hidden;
+            height: 0; /* Initially hidden */
+            transition: height 0.3s ease;
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -176,12 +219,16 @@
         
     <div class="flex-container">
         <div class="side-container-group">
-            <div class="side-container">
+            <div class="side-container" id="alerts-container">
                 <div class="money-bar-header">
                     <h5 style="font-size: 18px; margin: 0;">Alerts</h5>
                     <p style="font-size: 16px; margin: 0;">2</p>
                 </div>
                 <p class="truncate" style="font-size: 16px; margin: 0;">First new alert states you should stop spending all your money.</p>
+                <ul id="alerts-list" >
+                    <li>Alert 1: Spend wisely!</li>
+                    <li>Alert 2: You’re almost out of budget!</li>
+                </ul>
             </div>
             <div class="side-container">
                 <div class="money-bar-header">
@@ -197,13 +244,47 @@
                     </div>
                 </div>
             </div>
-            
+
+            <div class="side-container-sub-group">
+                <div class="sub-row">
+                    <div class="side-container">
+                        <div class="total-value-container">
+                            <h5 style="font-size: 16px">Pot 1</h5>
+                            <h5 style="font-size: 18px; color: #45a049;">£550 out of £600</h5>
+                        </div>
+                        <canvas id="pot1-chart"></canvas>
+                    </div>
+                    <div class="side-container">
+                        <div class="total-value-container">
+                            <h5 style="font-size: 16px">Pot 2</h5>
+                            <h5 style="font-size: 18px; color: #45a049;">£150 out of £400</h5>
+                        </div>
+                        <canvas id="pot2-chart"></canvas>
+                    </div>
+                </div>
+                <div class="sub-row">
+                    <div class="side-container">
+                        <div class="total-value-container">
+                            <h5 style="font-size: 16px">Pot 3</h5>
+                            <h5 style="font-size: 18px; color: #45a049;">£80 out of £500</h5>
+                        </div>
+                        <canvas id="pot3-chart"></canvas>
+                    </div>
+                    <div class="side-container">
+                        <div class="total-value-container">
+                            <h5 style="font-size: 16px">Pot 4</h5>
+                            <h5 style="font-size: 18px; color: #45a049;">£50 out of £200</h5>
+                        </div>
+                        <canvas id="pot4-chart"></canvas>
+                    </div>
+                </div>         
+            </div>            
         </div>
 
         <div class="content-wrapper">
             <div class="total-value-container">
-                <h5 style="font-size: 18px;" id="title-display">My Budget Title</h5>
-                <h5 style="font-size: 24px; color: #45a049;" id="total-display">£2000</h5>
+                <h5 style="font-size: 24px" id="title-display">My Budget Title</h5>
+                <h5 style="font-size: 36px; color: #45a049;" id="total-display">£2000</h5>
             </div>
 
             <div class="chart-container">
@@ -236,22 +317,62 @@
                     </div>
                 </div>
                 
-                <h5 style="font-size: 18px;">Budget 2</h5>
-                <div id="money-bar">
-                    <div class="money-pot green" style="width: 75%;">
-                        <div class="actual-value">£300 of £400</div>
+                <div class="money-bar-container">
+                    <h5 style="font-size: 18px;">Budget 2</h5>
+                    <div id="money-bar">
+                        <div class="money-pot green" style="width: 75%;">
+                            <div class="actual-value">£300 of £400</div>
+                        </div>
+                        <div class="money-pot remaining" style="width: 25%;"></div>
                     </div>
-                    <div class="money-pot remaining" style="width: 25%;"></div>
                 </div>
-                <h5 style="font-size: 18px;">Budget 3</h5>
-                <div id="money-bar">
-                    <div class="money-pot green" style="width: 75%;"></div>
-                    <div class="money-pot remaining" style="width: 25%;"></div>
+                
+                <div class="money-bar-container">
+                    <h5 style="font-size: 18px;">Budget 3</h5>
+                    <div id="money-bar">
+                        <div class="money-pot green" style="width: 75%;"></div>
+                        <div class="money-pot remaining" style="width: 25%;"></div>
+                    </div>
                 </div>
+                
                 <a>Create New</a>
             </div>
             <div class="side-container">
-                <h5 style="font-size: 18px;">Right Side container 2</h5>
+                <h5 style="font-size: 24px;">Recent Transactions</h5>
+                <div class="transaction">
+                    <div class="money-bar-header" style="margin-top: 20px;">
+                        <h5 style="font-size: 18px; margin: 0; color: rgb(131 131 131);">Greggs</h5>
+                        <p style="font-size: 20px; margin: 0;">- £3.40</p>
+                    </div>
+                    <div class="money-bar-header" style="margin-bottom: 20px;">
+                        <h5 style="font-size: 16px; margin: 0; color: rgb(131 131 131); font-weight: 100;">Food</h5>
+                        <p style="font-size: 14px; margin: 0;">4 hours ago</p>
+                    </div>
+                </div>
+                <div class="transaction">
+                    <div class="money-bar-header" style="margin-top: 20px;">
+                        <h5 style="font-size: 18px; margin: 0; color: rgb(131 131 131);">Pizza Grande</h5>
+                        <p style="font-size: 20px; margin: 0;">- £44.40</p>
+                    </div>
+                    <div class="money-bar-header" style="margin-bottom: 20px;">
+                        <h5 style="font-size: 16px; margin: 0; color: rgb(131 131 131); font-weight: 100;">Food</h5>
+                        <p style="font-size: 14px; margin: 0;">Yesterday</p>
+                    </div>
+                </div>
+                <div class="transaction">
+                    <div class="money-bar-header" style="margin-top: 20px;">
+                        <h5 style="font-size: 18px; margin: 0;">Deposit</h5>
+                        <p style="font-size: 20px; margin: 0; color: #45a049">£2,0000</p>
+                    </div>
+                    <div class="money-bar-header" style="margin-bottom: 20px;">
+                        <h5 style="font-size: 16px; margin: 0; color: rgb(131 131 131); font-weight: 100;">Paycheck</h5>
+                        <p style="font-size: 14px; margin: 0;">2 days ago</p>
+                    </div>
+                </div>
+                <!-- <div class="transaction" style="margin-top: 20px;">
+                    <a>View All</a>
+                </div> -->
+                
             </div>
         </div>
     </div>
@@ -385,6 +506,79 @@
         createChart();
         updateChart();
         updateDisplay(); // Initialize display on load
+
+        const alertsContainer = document.getElementById('alerts-container');
+        const alertsList = document.getElementById('alerts-list');
+
+        // Custom click events for containers
+        function toggleAlertsList() {
+            if (alertsList.style.height === "0px" || alertsList.style.height === "") {
+                // Get the full height of the hidden content
+                const fullHeight = alertsList.scrollHeight + "px";
+                
+                // Set the height to the full height (expand)
+                alertsList.style.height = fullHeight;
+
+                // Optionally, expand the container to fit its new content
+                alertsContainer.style.height = "auto"; 
+            } else {
+                // Collapse the content back to 0px height
+                alertsList.style.height = "0px";
+            }
+        }
+
+        // Add the click event listener to the container
+        alertsContainer.addEventListener('click', toggleAlertsList);
+
+        function createDoughnutChart(chartId, actual, total) {
+            const ctx = document.getElementById(chartId).getContext('2d');
+            const percentage = (actual / total) * 100;
+            let actualColor;
+
+            // Determine the color of the "actual" section based on the percentage
+            if (percentage > 75) {
+                actualColor = '#45a049'; // green
+            } else if (percentage > 25 && percentage <= 75) {
+                actualColor = '#FFA500'; // amber
+            } else {
+                actualColor = '#FF0000'; // red
+            }
+
+            // Create the doughnut chart
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [actual, total - actual], // actual vs remaining
+                        backgroundColor: [actualColor, '#C0C0C0'], // actual and remaining colors
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '70%', // Control the size of the doughnut hole
+                    plugins: {
+                        legend: {
+                            display: false // Hide the legend
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    const label = tooltipItem.dataIndex === 0 ? 'Actual' : 'Remaining';
+                                    return `${label}: £${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create charts for each pot
+        createDoughnutChart('pot1-chart', 550, 600); // Above 75% -> green
+        createDoughnutChart('pot2-chart', 150, 400); // Between 25% and 75% -> amber
+        createDoughnutChart('pot3-chart', 80, 500);  // Below 25% -> red
+        createDoughnutChart('pot4-chart', 50, 200);  // Below 25% -> red
     </script>
 </body>
 </html>
