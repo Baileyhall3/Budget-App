@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Detail - Barclays</title>
+    <link rel="stylesheet" href="styling.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="images/money-bag.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="scripts/navbar-loader.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            width: calc(100% - 40px);
+            gap: 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            margin-left: 200px;
+        }
+
+        .account-summary {
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background-color: #f4f4f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .transaction-section {
+            background-color: #f4f4f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column; 
+            width: 30%; 
+            margin-right: 40px;
+            margin-left: 40px;
+        }
+
+        .transaction {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-top: 1px solid rgb(131 131 131);
+            padding-top: 10px;
+        }
+
+        .transaction:first-child {
+            border-top: none;
+        }
+
+        .transaction-filter {
+            margin-bottom: 20px;
+        }
+
+        .money-bar-header {
+            justify-content: space-between;
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .balance-history-chart, .spending-categories-chart {
+            display: inline-block;
+            width: 48%;
+            vertical-align: top;
+        }
+
+        .chart-wrapper {
+            width: 48%;
+            display: inline-block;
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    
+    <div class="flex-container">
+
+        <div class="content-wrapper" style="align-self: start;">
+            <h2>Barclays - Detailed View</h2>
+
+            <div class="spending-categories-chart chart-container">
+                <div>
+                    <h3>Spending Breakdown by Category</h3>
+                    <canvas id="spendingCategoriesChart"></canvas>
+                </div>
+                
+                <div class="account-summary">
+                    <p>Total Spent This Week: £500</p>
+                    <p>Largest Transaction: £150 (Apple Store)</p>
+                    <p>Most Spent Category: Food & Dining</p>
+                </div>
+            </div>
+
+            <div class="balance-history-chart chart-container" style="width: 85%;">
+                <h3>Balance History</h3>
+                <canvas id="balanceHistoryChart"></canvas>
+            </div>
+        </div>
+        <div class="transaction-section">
+            <h3>Recent Transactions (Last 10)</h3>
+
+            <div class="transaction-filter">
+                <label for="filter-category">Filter by Category:</label>
+                <select id="filter-category">
+                    <option value="all">All Categories</option>
+                    <option value="food">Food & Dining</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="bills">Bills & Utilities</option>
+                </select>
+            </div>
+
+            <div id="transactions-list">
+                <!-- Transactions will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dummy data for transactions
+        const transactions = [
+            { name: 'Greggs', amount: -3.40, category: 'food', type: 'expense', description: 'Food', time: '4 hours ago' },
+            { name: 'Pizza Grande', amount: -44.40, category: 'food', type: 'expense', description: 'Food', time: 'Yesterday' },
+            { name: 'Apple Store', amount: -150.00, category: 'shopping', type: 'expense', description: 'Electronics', time: '2 days ago' },
+            { name: 'Spotify', amount: -9.99, category: 'entertainment', type: 'expense', description: 'Music', time: '3 days ago' },
+            { name: 'Water Bill', amount: -30.00, category: 'bills', type: 'expense', description: 'Utilities', time: '5 days ago' },
+            { name: 'Electricity Bill', amount: -50.00, category: 'bills', type: 'expense', description: 'Utilities', time: '5 days ago' },
+            { name: 'Coffee Shop', amount: -5.50, category: 'food', type: 'expense', description: 'Beverage', time: '6 days ago' },
+            { name: 'Uber', amount: -12.30, category: 'transportation', type: 'expense', description: 'Transport', time: '6 days ago' },
+            { name: 'Cinema', amount: -20.00, category: 'entertainment', type: 'expense', description: 'Movies', time: '7 days ago' },
+            { name: 'Deposit', amount: 500.00, category: 'income', type: 'income', description: 'Paycheck', time: '7 days ago' }
+        ];
+
+        // Function to load transactions
+        function loadTransactions(category = 'all') {
+            const transactionList = document.getElementById('transactions-list');
+            transactionList.innerHTML = ''; // Clear current transactions
+
+            // Filter transactions by category
+            const filteredTransactions = category === 'all' ? transactions : transactions.filter(t => t.category === category);
+
+            filteredTransactions.forEach(transaction => {
+                const transactionDiv = document.createElement('div');
+                transactionDiv.classList.add('transaction');
+
+                const headerDiv = document.createElement('div');
+                headerDiv.classList.add('money-bar-header');
+
+                const nameElement = document.createElement('h5');
+                nameElement.style.fontSize = '18px';
+                nameElement.style.margin = '0';
+                nameElement.textContent = transaction.name;
+
+                const amountElement = document.createElement('p');
+                amountElement.style.fontSize = '20px';
+                amountElement.style.margin = '0';
+                amountElement.textContent = (transaction.amount > 0 ? '+ £' : '- £') + Math.abs(transaction.amount).toFixed(2);
+                amountElement.style.color = transaction.amount > 0 ? '#45a049' : '#FF0000';
+
+                headerDiv.appendChild(nameElement);
+                headerDiv.appendChild(amountElement);
+                transactionDiv.appendChild(headerDiv);
+
+                const descriptionDiv = document.createElement('div');
+                descriptionDiv.classList.add('money-bar-header');
+                descriptionDiv.style.marginBottom = '20px';
+
+                const descriptionElement = document.createElement('h5');
+                descriptionElement.style.fontSize = '16px';
+                descriptionElement.style.margin = '0';
+                descriptionElement.style.color = 'rgb(131, 131, 131)';
+                descriptionElement.style.fontWeight = '100';
+                descriptionElement.textContent = transaction.description;
+
+                const timeElement = document.createElement('p');
+                timeElement.style.fontSize = '14px';
+                timeElement.style.margin = '0';
+                timeElement.textContent = transaction.time;
+
+                descriptionDiv.appendChild(descriptionElement);
+                descriptionDiv.appendChild(timeElement);
+                transactionDiv.appendChild(descriptionDiv);
+                
+                // Add the transactionDiv to the transactions list
+                transactionList.appendChild(transactionDiv);
+            });
+        }
+
+        // Load all transactions on initial load
+        loadTransactions();
+
+        // Event listener for category filter
+        document.getElementById('filter-category').addEventListener('change', function () {
+            const selectedCategory = this.value;
+            loadTransactions(selectedCategory);
+        });
+
+        // Chart data for Spending Categories Pie Chart
+        const spendingCategoriesData = {
+            labels: ['Food & Dining', 'Entertainment', 'Shopping', 'Bills & Utilities', 'Transport'],
+            datasets: [{
+                data: [150, 50, 150, 80, 12],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+            }]
+        };
+
+        // Create Pie Chart for Spending Categories
+        const spendingCategoriesCtx = document.getElementById('spendingCategoriesChart').getContext('2d');
+        const spendingCategoriesChart = new Chart(spendingCategoriesCtx, {
+            type: 'pie',
+            data: spendingCategoriesData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Chart data for Balance History Line Chart
+        const balanceHistoryData = {
+            labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+            datasets: [{
+                label: 'Balance (£)',
+                data: [1500, 1400, 1300, 1250, 1200, 1180, 1600],
+                fill: false,
+                borderColor: '#4BC0C0',
+                tension: 0.1
+            }]
+        };
+
+        // Create Line Chart for Balance History
+        const balanceHistoryCtx = document.getElementById('balanceHistoryChart').getContext('2d');
+        const balanceHistoryChart = new Chart(balanceHistoryCtx, {
+            type: 'line',
+            data: balanceHistoryData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 2000
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

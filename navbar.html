@@ -1,28 +1,249 @@
-<nav class="nav">
-    <div class="nav-container">
-        <div class="nav-logo">
-            <p><a href="index.html">BUDGET PLANNER</a></p>
-        </div>
-        <div class="hamburger" id="hamburger">
-            &#9776;
-        </div>
-        <div class="nav-menu" id="nav-menu">
-            <ul>
-                <li><a id="home-link" href="index.html" class="link">Home</a></li>
-                <li><a id="pots-link" href="pots.html" class="link">Pots</a></li>
-                <li><a id="budgets-link" href="budget.html" class="link">Budgets</a></li>
-                <!-- <li class="dropdown">
-                    <a id="artists-link" href="kyle.html" class="link">Artists</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="kyle.html" class="dropdown-item">Kyle</a></li>
-                        <li><a href="gayle.html" class="dropdown-item">Gayle</a></li>
-                        <li><a href="sinead.html" class="dropdown-item">Sinead</a></li>
-                        <li><a href="chloe.html" class="dropdown-item">Chloe</a></li>
-                        <li><a href="luke.html" class="dropdown-item">Luke</a></li>
-                        <li><a href="laura.html" class="dropdown-item">Laura</a></li>
-                    </ul>
-                </li> -->
-            </ul>
-        </div>
+<nav class="side-nav" id="side-nav">
+    <div class="nav-logo">
+        <h2 style="margin-top: 5px; margin-bottom: 5px;">
+            <a class="nav-title" style="color: black;" href="index.html">Pocket Money</a>
+        </h2>
+    </div>
+    
+    <div class="collapse-btn" id="collapse-btn">&#9776;</div>
+    
+    <div class="nav-menu">
+        <ul>
+            <li><a id="home-link" href="index.html" class="link"><i class="fa fa-home"></i> Dashboard</a></li>
+            <li><a id="savings-link" href="savings.html" class="link"><i class="fa fa-bank"></i> Savings</a></li>
+            <li><a id="accounts-link" href="accounts.html" class="link"><i class="fa fa-credit-card"></i> Accounts</a></li>
+            <!-- <li><a id="reports-link" href="reports.html" class="link"><i class="fa fa-bar-chart"></i> Reports</a></li> -->
+            <li><a id="settings-link" href="settings.html" class="link"><i class="fa fa-cog"></i> Settings</a></li>
+        </ul>
     </div>
 </nav>
+
+<!-- Right-aligned icon buttons -->
+<div class="icon-buttons">
+    <button class="icon-btn" id="dark-mode-toggle">
+        <i class="fa fa-lightbulb-o"></i>
+    </button>
+    <!-- Plus Button -->
+    <div class="dropdown">
+        <button class="icon-btn" id="add-btn">
+            <i class="fa fa-plus"></i> <!-- Plus Icon -->
+        </button>
+        <div class="dropdown-content" id="add-dropdown">
+            <a href="#">Add account</a>
+            <a href="#">New budget</a>
+            <a href="#">New pot</a>
+        </div>
+    </div>
+
+    <!-- Alerts Button -->
+    <div class="dropdown">
+        <button class="icon-btn" id="alerts-btn">
+            <i class="fa fa-bell"></i> <!-- Alerts Icon -->
+        </button>
+        <div class="dropdown-content alerts-dropdown" id="alerts-dropdown">
+            <div class="alert-item">
+                <h5>Payment Due</h5>
+                <p>Your payment is due in 3 days.</p>
+                <span class="alert-date">02/10/2024</span>
+            </div>
+            <hr>
+            <div class="alert-item">
+                <h5>Low Balance</h5>
+                <p>Your account balance is below £50.</p>
+                <span class="alert-date">01/10/2024</span>
+            </div>
+            <hr>
+            <div class="alert-item">
+                <h5>New Transaction</h5>
+                <p>You spent £20 at Pizza Place.</p>
+                <span class="alert-date">30/09/2024</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Button -->
+    <div class="dropdown">
+        <button class="icon-btn" id="profile-btn">
+            <i class="fa fa-user"></i> <!-- Profile Icon -->
+        </button>
+        <div class="dropdown-content" id="profile-dropdown">
+            <a href="#">My Profile</a>
+            <a href="#">Log out</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Styling for the dropdown container */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Dropdown content (hidden by default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #f4f4f9;
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        border-radius: 10px;
+        min-width: 160px;
+        z-index: 1;
+    }
+
+    /* Dropdown link styling */
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Last item without border */
+    .dropdown-content a:last-child {
+        border-bottom: none;
+    }
+
+    /* Hover effect */
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+    /* Show the dropdown on button click */
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Alerts specific dropdown styling */
+    .alerts-dropdown .alert-item {
+        padding: 10px 15px;
+    }
+
+    .alerts-dropdown .alert-item h5 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .alerts-dropdown .alert-item p {
+        margin: 5px 0;
+        font-size: 12px;
+        color: #333;
+    }
+
+    .alert-date {
+        display: block;
+        text-align: right;
+        font-size: 12px;
+        color: grey;
+    }
+
+    .icon-buttons {
+        position: absolute;
+        top: 15px;
+        right: 40px;
+        display: flex;
+        gap: 15px;
+    }
+
+    /* Styling for the icon buttons */
+    .icon-btn {
+        background-color: #f4f4f9;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+    .icon-btn i {
+        font-size: 18px;
+        color: #333;
+    }
+
+    /* Hover state for the icon button */
+    .icon-btn:hover {
+        background-color: #e0e0e5;
+    }
+</style>
+
+<script>
+    // Profile dropdown toggle
+    document.getElementById('profile-btn').addEventListener('click', function () {
+        toggleDropdown('profile-dropdown');
+    });
+
+    // Alerts dropdown toggle
+    document.getElementById('alerts-btn').addEventListener('click', function () {
+        toggleDropdown('alerts-dropdown');
+    });
+
+    // Add dropdown toggle
+    document.getElementById('add-btn').addEventListener('click', function () {
+        toggleDropdown('add-dropdown');
+    });
+
+    function toggleDropdown(dropdownId) {
+        document.querySelectorAll('.dropdown-content').forEach(function (dropdown) {
+            if (dropdown.id !== dropdownId) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // Toggle the selected dropdown
+        const dropdown = document.getElementById(dropdownId);
+        if (dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+        } else {
+            dropdown.style.display = 'block';
+        }
+    }
+
+    // Close the dropdown if clicked outside
+    window.onclick = function(event) {
+        if (!event.target.matches('.icon-btn')) {
+            document.querySelectorAll('.dropdown-content').forEach(function (dropdown) {
+                dropdown.style.display = 'none';
+            });
+        }
+    }
+
+    // Toggle dark mode
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const body = document.body;
+
+    // Check localStorage for saved dark mode preference
+    if (localStorage.getItem('dark-mode') === 'enabled') {
+        enableDarkMode();
+    }
+
+    // Add event listener for the dark mode toggle button
+    darkModeToggle.addEventListener('click', () => {
+        console.log('working')
+        if (body.classList.contains('dark-mode')) {
+            disableDarkMode();
+        } else {
+            enableDarkMode();
+        }
+    });
+
+    // Function to enable dark mode
+    function enableDarkMode() {
+        body.classList.add('dark-mode');
+        localStorage.setItem('dark-mode', 'enabled'); // Save the preference in localStorage
+    }
+
+    // Function to disable dark mode
+    function disableDarkMode() {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('dark-mode', 'disabled'); // Save the preference in localStorage
+    }
+
+</script>
+

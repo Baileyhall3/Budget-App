@@ -7,17 +7,23 @@
     <title>Budget Dashboard</title>
     <link rel="stylesheet" href="styling.css">
     <link rel="icon" type="image/x-icon" href="images/money-bag.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="scripts/navbar-loader.js" defer></script>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+
+        .flex-container {
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            overflow-x: hidden;
+            justify-content: space-between;
+            width: calc(100% - 40px);
+            margin: 40px auto;
+            margin-top: 70px;
+            gap: 20px;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .side-nav.collapsed ~ .flex-container {
+            margin-left: 50px; 
         }
 
         .total-value-container {
@@ -28,16 +34,7 @@
             font-weight: bold;
             margin-bottom: 30px;
             /* margin-top: 40px; */
-        }
-
-        .flex-container {
-            display: flex;
-            justify-content: space-between;
-            width: calc(100% - 40px);
-            /* max-width: 1200px;  */
-            margin: 40px auto;
-            gap: 20px;
-            margin-top: 120px;
+            display: none;
         }
 
         .content-wrapper {
@@ -45,11 +42,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 40%;
+            width: 50%;
+            margin-left: 200px;
         }
 
         .chart-container {
-            background-color: white;
+            /* background-color: white; */
+            background-color: #f4f4f9;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -58,7 +57,8 @@
         }
 
         .side-container {
-            background-color: white;
+            /* background-color: white; */
+            background-color: #f4f4f9;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -76,7 +76,9 @@
         .side-container-group {
             display: flex;
             flex-direction: column; 
-            width: 25%; 
+            width: 30%; 
+            margin-right: 40px;
+            margin-left: 40px;
         }
 
         .side-container-sub-group {
@@ -121,6 +123,15 @@
         button {
             padding: 10px 20px;
             background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .alerts-btn {
+            padding: 2px 5px;
+            background-color: #FFA500;
             color: white;
             border: none;
             border-radius: 5px;
@@ -218,68 +229,6 @@
     <div id="navbar-placeholder"></div>
         
     <div class="flex-container">
-        <div class="side-container-group">
-            <div class="side-container" id="alerts-container">
-                <div class="money-bar-header">
-                    <h5 style="font-size: 18px; margin: 0;">Alerts</h5>
-                    <p style="font-size: 16px; margin: 0;">2</p>
-                </div>
-                <p class="truncate" style="font-size: 16px; margin: 0;">First new alert states you should stop spending all your money.</p>
-                <ul id="alerts-list" >
-                    <li>Alert 1: Spend wisely!</li>
-                    <li>Alert 2: You’re almost out of budget!</li>
-                </ul>
-            </div>
-            <div class="side-container">
-                <div class="money-bar-header">
-                    <h5 style="font-size: 18px; margin: 0;">Current Budget</h5>
-                    <p style="font-size: 16px; margin: 0;">£25 left</p>
-                </div>
-                <div id="money-bar">
-                    <div class="money-pot green" style="width: 75%;">
-                        <div class="actual-value">75%</div>
-                    </div>
-                    <div class="money-pot remaining" style="width: 25%;">
-                        <div class="actual-value">25%</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="side-container-sub-group">
-                <div class="sub-row">
-                    <div class="side-container">
-                        <div class="total-value-container">
-                            <h5 style="font-size: 16px">Pot 1</h5>
-                            <h5 style="font-size: 18px; color: #45a049;">£550 out of £600</h5>
-                        </div>
-                        <canvas id="pot1-chart"></canvas>
-                    </div>
-                    <div class="side-container">
-                        <div class="total-value-container">
-                            <h5 style="font-size: 16px">Pot 2</h5>
-                            <h5 style="font-size: 18px; color: #45a049;">£150 out of £400</h5>
-                        </div>
-                        <canvas id="pot2-chart"></canvas>
-                    </div>
-                </div>
-                <div class="sub-row">
-                    <div class="side-container">
-                        <div class="total-value-container">
-                            <h5 style="font-size: 16px">Pot 3</h5>
-                            <h5 style="font-size: 18px; color: #45a049;">£80 out of £500</h5>
-                        </div>
-                        <canvas id="pot3-chart"></canvas>
-                    </div>
-                    <div class="side-container">
-                        <div class="total-value-container">
-                            <h5 style="font-size: 16px">Pot 4</h5>
-                            <h5 style="font-size: 18px; color: #45a049;">£50 out of £200</h5>
-                        </div>
-                        <canvas id="pot4-chart"></canvas>
-                    </div>
-                </div>         
-            </div>            
-        </div>
 
         <div class="content-wrapper">
             <div class="total-value-container">
@@ -304,39 +253,33 @@
         </div>
 
         <div class="side-container-group">
-            <div class="side-container">
-                <h5 style="font-size: 24px;">Upcoming Budgets</h5>
-                
-                <div class="money-bar-container">
-                    <h5 style="font-size: 18px;">Budget 1</h5>
-                    <div id="money-bar">
-                        <div class="money-pot green" style="width: 75%;">
-                            <div class="actual-value">£300 of £400</div>
-                        </div>
-                        <div class="money-pot remaining" style="width: 25%;"></div>
-                    </div>
+            <div class="side-container" id="alerts-container">
+                <div class="money-bar-header">
+                    <h5 style="font-size: 18px; margin: 0;">Alerts</h5>
+                    <!-- <p style="font-size: 16px; margin: 0;">2</p> -->
+                    <button class="alerts-btn" style="font-size:16px; margin: 0;">2 <i class="fa fa-bell"></i></button>
                 </div>
-                
-                <div class="money-bar-container">
-                    <h5 style="font-size: 18px;">Budget 2</h5>
-                    <div id="money-bar">
-                        <div class="money-pot green" style="width: 75%;">
-                            <div class="actual-value">£300 of £400</div>
-                        </div>
-                        <div class="money-pot remaining" style="width: 25%;"></div>
-                    </div>
-                </div>
-                
-                <div class="money-bar-container">
-                    <h5 style="font-size: 18px;">Budget 3</h5>
-                    <div id="money-bar">
-                        <div class="money-pot green" style="width: 75%;"></div>
-                        <div class="money-pot remaining" style="width: 25%;"></div>
-                    </div>
-                </div>
-                
-                <a>Create New</a>
+                <p class="truncate" style="font-size: 16px; margin: 0;">First new alert states you should stop spending all your money.</p>
+                <ul id="alerts-list" >
+                    <li>Alert 1: Spend wisely!</li>
+                    <li>Alert 2: You’re almost out of budget!</li>
+                </ul>
             </div>
+            <div class="side-container">
+                <div class="money-bar-header">
+                    <h5 style="font-size: 18px; margin: 0;">Current Budget</h5>
+                    <p style="font-size: 16px; margin: 0;">£25 left</p>
+                </div>
+                <div id="money-bar">
+                    <div class="money-pot green" style="width: 75%;">
+                        <div class="actual-value">75%</div>
+                    </div>
+                    <div class="money-pot remaining" style="width: 25%;">
+                        <div class="actual-value">25%</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="side-container">
                 <h5 style="font-size: 24px;">Recent Transactions</h5>
                 <div class="transaction">
@@ -367,6 +310,31 @@
                     <div class="money-bar-header" style="margin-bottom: 20px;">
                         <h5 style="font-size: 16px; margin: 0; color: rgb(131 131 131); font-weight: 100;">Paycheck</h5>
                         <p style="font-size: 14px; margin: 0;">2 days ago</p>
+                    </div>
+                </div>
+                <!-- <div class="transaction" style="margin-top: 20px;">
+                    <a>View All</a>
+                </div> -->
+                
+            </div>
+            <div class="side-container">
+                <h5 style="font-size: 24px;">My Accounts</h5>
+                <div class="transaction">
+                    <div class="money-bar-header" style="margin-top: 20px;">
+                        <h5 style="font-size: 18px; margin: 0;">Barclays</h5>
+                        <p style="font-size: 20px; margin: 0; color: #45a049">£1,4570</p>
+                    </div>
+                </div>
+                <div class="transaction">
+                    <div class="money-bar-header" style="margin-top: 20px;">
+                        <h5 style="font-size: 18px; margin: 0;">Monzo</h5>
+                        <p style="font-size: 20px; margin: 0; color: #45a049">£340</p>
+                    </div>
+                </div>
+                <div class="transaction">
+                    <div class="money-bar-header" style="margin-top: 20px;">
+                        <h5 style="font-size: 18px; margin: 0;">Joint Account</h5>
+                        <p style="font-size: 20px; margin: 0; color: #45a049">£2,890</p>
                     </div>
                 </div>
                 <!-- <div class="transaction" style="margin-top: 20px;">

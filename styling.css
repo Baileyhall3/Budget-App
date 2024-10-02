@@ -1,7 +1,12 @@
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
-    margin: 0; 
-    padding: 0;
+    /* background-color: #f7f7f7; */
+    display: flex;
+    justify-content: center;
+    /* align-items: flex-start; */
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 h5 {
@@ -28,77 +33,100 @@ p {
     overflow: hidden;
 }
 
-.nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgb(64, 224, 0);
-    z-index: 100;
-    padding: 20px 0;
-    height: 60px;
-}
-
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-.nav.hidden {
-    top: -100px;
-}
-
-.nav-logo p {
-    color: #000000;
-    font-size: 25px;
-    font-weight: 600;
-}
-
-.nav-logo a {
+/* General styles */
+.nav-title {
+    font-weight: 100;
+    font-family: 'Brush Script MT', cursive; 
+    font-size: 36px;
+    color: black; /* Updated to remove white color */
     text-decoration: none;
-    color: #000000;
 }
 
-.hamburger {
-    display: none; 
+/* Sidebar container */
+.side-nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 250px; /* Sidebar width */
+    background: transparent; /* No background color */
+    background-color: #f4f4f9;
+    padding: 10px;
+    transition: width 0.3s ease; /* Smooth collapse/expand */
+    z-index: 100;
 }
 
+/* Hiding the content (logo, links) when collapsed */
+.side-nav.collapsed {
+    width: 50px;
+}
+
+/* Hide the logo and links content when collapsed */
+.side-nav.collapsed .nav-logo,
+.side-nav.collapsed .nav-menu {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Show content again when expanded */
+.side-nav .nav-logo,
+.side-nav .nav-menu {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Collapse button styling */
+.collapse-btn {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: black;
+    transition: transform 0.3s ease;
+}
+
+/* Rotate button when collapsed */
+.side-nav.collapsed .collapse-btn {
+    transform: rotate(180deg);
+}
+
+/* Navigation menu */
 .nav-menu {
-    display: flex;
-    align-items: center;
+    margin-top: 50px; /* Spacing between logo and menu items */
 }
 
 .nav-menu ul {
-    margin: 0;
     list-style: none;
-    padding-right: 250px;
+    padding: 0;
 }
 
 .nav-menu ul li {
-    margin-left: 20px;
-    display: inline-block;
-    position: relative;
+    margin-bottom: 20px; /* Spacing between links */
 }
 
 .nav-menu ul li .link {
     text-decoration: none;
     font-weight: 500;
-    color: #fff;
-    padding-bottom: 5px;
+    color: black;
+    display: block;
+    padding: 10px;
+    font-size: 18px;
 }
 
 .nav-menu li a:hover {
     color: #c27fff;
-    transition: .3s ease-out;
+    transition: color 0.3s ease;
 }
 
-.link.active {
+
+
+/* .link.active {
     color: #c27fff;
     border-bottom: 2px solid #8A2BE2FF;
-}
+} */
 
 .hamburger {
     display: none;
@@ -240,4 +268,28 @@ li {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 5px;
+}
+
+/* Dark Mode Styling */
+.dark-mode {
+    background-color: #1a1a1a;  /* Dark background */
+    color: white;  /* White text */
+}
+
+/* Dark Mode for containers */
+.dark-mode .icon-btn {
+    background-color: #333333; /* Dark grey container */
+}
+
+.dark-mode .dropdown-content {
+    background-color: #333333; /* Dark grey dropdown */
+}
+
+.dark-mode a {
+    color: white; /* White links in dark mode */
+}
+
+.dark-mode .alert-item, 
+.dark-mode .dropdown-content a {
+    border-bottom: 1px solid #555; /* Darker borders */
 }

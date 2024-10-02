@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Dashboard</title>
+    <link rel="stylesheet" href="styling.css">
+    <link rel="icon" type="image/x-icon" href="images/money-bag.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="scripts/navbar-loader.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .flex-container {
+            display: flex;
+            /* justify-content: space-between; */
+            width: calc(100% - 40px);
+            /* margin: 40px auto; */
+            gap: 40px; /* Space between pots */
+            transition: margin-left 0.3s ease;
+            width: 100%;
+        }
+
+        .side-nav.collapsed ~ .flex-container {
+            margin-left: 50px; 
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%; /* Make the wrapper wider */
+            margin: 0 auto; /* Center the wrapper */
+            margin-left: 250px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .chart-container {
+            background-color: #f4f4f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 1000px;
+            margin-bottom: 30px; /* Space between charts */
+            margin-top: 30px;
+        }
+
+        .side-container {
+            background-color: #f4f4f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.6s ease, box-shadow 0.6s ease;
+            cursor: pointer;
+            overflow: hidden;
+            width: 200px;
+            max-width: 200px;
+            flex: 1;
+        }
+
+        .side-container:hover {
+            transform: scale(1.05); 
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+        }
+
+        .money-bar-container {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .money-bar-header {
+            justify-content: space-between; 
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 5px;
+        }
+
+        .truncate {
+            text-overflow: ellipsis;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+        
+    <div class="content-wrapper">
+        <!-- Line Chart Section -->
+        <div class="chart-container">
+            <h5>Savings History</h5>
+            <canvas id="savings-chart"></canvas>
+        </div>
+
+        <div>
+            <div style="margin-bottom: 30px; align-self: self-start;">
+                <div style="text-align: start;">
+                    <h2>My Pots</h2>
+                </div>
+                <div class="flex-container">
+                    <div class="side-container">
+                        <h5 style="font-size: 16px">Pot 1</h5>
+                        <h5 style="font-size: 18px; color: #45a049;">£550 out of £600</h5>
+                        <canvas id="pot1-chart"></canvas>
+                    </div>
+                    <div class="side-container">
+                        <h5 style="font-size: 16px">Pot 2</h5>
+                        <h5 style="font-size: 18px; color: #45a049;">£150 out of £400</h5>
+                        <canvas id="pot2-chart"></canvas>
+                    </div>
+                    <div class="side-container">
+                        <h5 style="font-size: 16px">Pot 3</h5>
+                        <h5 style="font-size: 18px; color: #45a049;">£80 out of £500</h5>
+                        <canvas id="pot3-chart"></canvas>
+                    </div>
+                    <div class="side-container">
+                        <h5 style="font-size: 16px">Pot 4</h5>
+                        <h5 style="font-size: 18px; color: #45a049;">£50 out of £200</h5>
+                        <canvas id="pot4-chart"></canvas>
+                    </div>
+                    <div class="side-container">
+                        <h5 style="font-size: 16px">Pot 5</h5>
+                        <h5 style="font-size: 18px; color: #45a049;">£10 out of £100</h5>
+                        <canvas id="pot5-chart"></canvas>
+                    </div>
+                </div>  
+            </div>
+            
+            <div style="margin-bottom: 30px; align-self: self-start;">
+                <div style="text-align: start;">
+                    <h2>My Budgets</h2>
+                </div>
+                <div class="flex-container">
+                    <div class="side-container">
+                        <h5 style="font-size: 16px">Budget 1</h5>
+                        <h5 style="font-size: 18px; color: #45a049;">£550 out of £600</h5>
+                        <canvas id="pot1-chart"></canvas>
+                    </div>
+                    <div class="side-container">
+                        <h5 style="font-size: 16px">Budget 2</h5>
+                        <h5 style="font-size: 18px; color: #45a049;">£150 out of £400</h5>
+                        <canvas id="pot2-chart"></canvas>
+                    </div>
+                    <div class="side-container">
+                        <h5 style="font-size: 16px">Budget 3</h5>
+                        <h5 style="font-size: 18px; color: #45a049;">£80 out of £500</h5>
+                        <canvas id="pot3-chart"></canvas>
+                    </div>
+                    <div class="side-container">
+                        <h5 style="font-size: 16px">Budget 4</h5>
+                        <h5 style="font-size: 18px; color: #45a049;">£50 out of £200</h5>
+                        <canvas id="pot4-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+
+    <script>
+        function createDoughnutChart(chartId, actual, total) {
+            const ctx = document.getElementById(chartId).getContext('2d');
+            const percentage = (actual / total) * 100;
+            let actualColor;
+
+            // Determine the color of the "actual" section based on the percentage
+            if (percentage > 75) {
+                actualColor = '#45a049'; // green
+            } else if (percentage > 25 && percentage <= 75) {
+                actualColor = '#FFA500'; // amber
+            } else {
+                actualColor = '#FF0000'; // red
+            }
+
+            // Create the doughnut chart
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [actual, total - actual], // actual vs remaining
+                        backgroundColor: [actualColor, '#C0C0C0'], // actual and remaining colors
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '70%', // Control the size of the doughnut hole
+                    plugins: {
+                        legend: {
+                            display: false // Hide the legend
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    const label = tooltipItem.dataIndex === 0 ? 'Actual' : 'Remaining';
+                                    return `${label}: £${tooltipItem.raw}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Create charts for each pot
+        createDoughnutChart('pot1-chart', 550, 600); 
+        createDoughnutChart('pot2-chart', 150, 400); 
+        createDoughnutChart('pot3-chart', 80, 500); 
+        createDoughnutChart('pot4-chart', 50, 200); 
+        createDoughnutChart('pot5-chart', 10, 100);
+
+        // Line Chart Data
+        const ctx = document.getElementById('savings-chart').getContext('2d');
+        const savingsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                datasets: [
+                    {
+                        label: 'Budget',
+                        data: [2000, 1800, 1500, 1700, 1900, 2000],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        // fill: true,
+                    },
+                    {
+                        label: 'Amount Used',
+                        data: [1800, 1600, 1400, 1300, 1600, 1900],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        // fill: true,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 2000 // Setting y-axis max value to 2000
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
