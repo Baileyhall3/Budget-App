@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
     <script src="scripts/navbar-loader.js" defer></script>
+    <script src="scripts/shared.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -205,21 +206,8 @@
     
 
     <script>
-        function getLast7Days() {
-            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            let today = new Date();
-            let last7Days = [];
 
-            for (let i = 6; i >= 0; i--) {
-                let date = new Date();
-                date.setDate(today.getDate() - i);
-                last7Days.push(daysOfWeek[date.getDay()]);
-            }
-
-            return last7Days;
-        }
-
-        const labels = getLast7Days();
+        const labels = getLast7Days(); // fn resides in shared.js
 
         const ctx = document.getElementById('account1-chart').getContext('2d');
         const data = {
