@@ -4,25 +4,34 @@
             <a class="nav-title" style="color: black;" href="index.html">Pocket Money</a>
         </h2>
     </div>
-    
-    <div class="collapse-btn" id="collapse-btn">&#9776;</div>
-    
-    <div class="nav-menu">
-        <ul>
-            <li><a id="home-link" href="index.html" class="link"><i class="fa fa-home"></i> Dashboard</a></li>
-            <li><a id="savings-link" href="savings.html" class="link"><i class="fa fa-bank"></i> Savings</a></li>
-            <li><a id="accounts-link" href="accounts.html" class="link"><i class="fa fa-credit-card"></i> Accounts</a></li>
-            <!-- <li><a id="reports-link" href="reports.html" class="link"><i class="fa fa-bar-chart"></i> Reports</a></li> -->
-            <li><a id="settings-link" href="settings.html" class="link"><i class="fa fa-cog"></i> Settings</a></li>
-        </ul>
+
+    <!-- Collapse Button -->
+    <div class="collapse-btn" id="collapse-btn">&#9776;</div> <!-- Hamburger Icon -->
+
+    <div class="profile-dropdown-container">
+        <div class="dropdown">
+            <button class="profile-btn">
+                <i class="fa fa-user"></i>
+                <span>Bailey Hall</span>
+            </button>
+            <div class="dropdown-content" id="profile-dropdown">
+                <a href="#">My Profile</a>
+                <a href="#">Log out</a>
+            </div>
+        </div>
     </div>
+    
+    <ul class="nav-menu">
+        <li><a id="home-link" href="index.html" class="link"><i class="fa fa-home"></i> Dashboard</a></li>
+        <li><a id="savings-link" href="savings.html" class="link"><i class="fa fa-bank"></i> Savings</a></li>
+        <li><a id="accounts-link" href="accounts.html" class="link"><i class="fa fa-credit-card"></i> Accounts</a></li>
+        <li><a id="reports-link" href="reports.html" class="link"><i class="fa fa-bar-chart"></i> Reports</a></li>
+        <li><a id="settings-link" href="settings.html" class="link"><i class="fa fa-cog"></i> Settings</a></li>
+    </ul>
 </nav>
 
 <!-- Right-aligned icon buttons -->
 <div class="icon-buttons">
-    <button class="icon-btn" id="dark-mode-toggle">
-        <i class="fa fa-lightbulb-o"></i>
-    </button>
     <!-- Plus Button -->
     <div class="dropdown">
         <button class="icon-btn" id="add-btn">
@@ -58,17 +67,6 @@
                 <p>You spent £20 at Pizza Place.</p>
                 <span class="alert-date">30/09/2024</span>
             </div>
-        </div>
-    </div>
-
-    <!-- Profile Button -->
-    <div class="dropdown">
-        <button class="icon-btn" id="profile-btn">
-            <i class="fa fa-user"></i> <!-- Profile Icon -->
-        </button>
-        <div class="dropdown-content" id="profile-dropdown">
-            <a href="#">My Profile</a>
-            <a href="#">Log out</a>
         </div>
     </div>
 </div>
@@ -171,9 +169,72 @@
     .icon-btn:hover {
         background-color: #e0e0e5;
     }
+    
+    /* Profile dropdown container aligned to the right */
+    .profile-dropdown-container {
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+    }
+
+    /* Profile button styling */
+    .profile-btn {
+        display: flex;
+        align-items: center;
+        background-color: #f4f4f9;
+        border: none;
+        padding: 10px 15px;
+        font-size: 18px;
+        color: #333;
+        cursor: pointer;
+        border-radius: 50px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+    }
+
+    /* Profile button icon and text alignment */
+    .profile-btn i {
+        font-size: 22px; /* Make icon bigger */
+        margin-right: 10px;
+    }
+
+    .profile-btn span {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Collapse Button Styles */
+    .collapse-btn {
+        font-size: 30px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        margin-left: 20px;
+    }
+
+    /* Collapsed navigation styles */
+    .side-nav.collapsed {
+        width: 50px; /* Make it smaller */
+    }
+
+    .side-nav.collapsed .nav-menu li a {
+        display: none; /* Hide menu text */
+    }
+
+    .side-nav.collapsed .profile-dropdown-container {
+        display: none; /* Hide profile dropdown when collapsed */
+    }
+
 </style>
 
 <script>
+    // Collapse navigation functionality
+    document.getElementById('collapse-btn').addEventListener('click', function() {
+        const sideNav = document.getElementById('side-nav');
+        sideNav.classList.toggle('collapsed');
+    });
+
     // Profile dropdown toggle
     document.getElementById('profile-btn').addEventListener('click', function () {
         toggleDropdown('profile-dropdown');
@@ -213,37 +274,4 @@
             });
         }
     }
-
-    // Toggle dark mode
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-    const body = document.body;
-
-    // Check localStorage for saved dark mode preference
-    if (localStorage.getItem('dark-mode') === 'enabled') {
-        enableDarkMode();
-    }
-
-    // Add event listener for the dark mode toggle button
-    darkModeToggle.addEventListener('click', () => {
-        console.log('working')
-        if (body.classList.contains('dark-mode')) {
-            disableDarkMode();
-        } else {
-            enableDarkMode();
-        }
-    });
-
-    // Function to enable dark mode
-    function enableDarkMode() {
-        body.classList.add('dark-mode');
-        localStorage.setItem('dark-mode', 'enabled'); // Save the preference in localStorage
-    }
-
-    // Function to disable dark mode
-    function disableDarkMode() {
-        body.classList.remove('dark-mode');
-        localStorage.setItem('dark-mode', 'disabled'); // Save the preference in localStorage
-    }
-
 </script>
-

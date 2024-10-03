@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link rel="stylesheet" href="styling.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="images/money-bag.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="scripts/navbar-loader.js" defer></script>
+    <script src="scripts/shared.js" defer></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            width: calc(100% - 40px);
+            margin-top: 70px;
+            gap: 20px;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+            margin-left: 200px;
+            margin-top: 70px;
+        }
+
+        .summary-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .top-container {
+            background-color: #f4f4f9;
+            padding: 20px;
+            border-radius: 10px;
+            width: 32%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-container h5 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .charts-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+            width: 100%;
+        }
+
+        .chart-container {
+            background-color: #f4f4f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .balance-history-chart {
+            width: 60%;
+        }
+
+        .spending-categories-chart {
+            width: 40%;
+        }
+
+        .account-summary {
+            margin-top: 20px;
+        }
+
+        /* Dropdown Styling */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            background-color: #f4f4f9;
+            color: black;
+            padding: 8px 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #f4f4f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    
+    <div class="content-wrapper">
+        <!-- Summary Section -->
+        <div class="summary-container">
+            <div class="top-container container-rounded">
+                <h5>Total Income</h5>
+                <h5 style="color: #45a049">£4,500</h5>
+            </div>
+            <div class="top-container container-rounded">
+                <h5>Total Expenses</h5>
+                <h5 style="color: #ff0000">£2,800</h5>
+            </div>
+            <div class="top-container container-rounded">
+                <h5>Balance</h5>
+                <h5 style="color: #006eff">£1,700</h5>
+            </div>
+        </div>
+
+        <!-- Charts Section (Pie and Line Charts Side by Side) -->
+        <div class="charts-container">
+            <!-- Pie Chart -->
+            <div class="spending-categories-chart chart-container">
+                <h3>Spending Breakdown by Category</h3>
+                <canvas id="spendingCategoriesChart"></canvas>
+                
+                <div class="account-summary">
+                    <p>Total Spent Last 30 Days: £2,800</p>
+                    <p>Largest Transaction: £400 (Rent)</p>
+                    <p>Most Spent Category: Housing</p>
+                </div>
+            </div>
+
+            <!-- Line Chart -->
+            <div class="balance-history-chart chart-container" style="width: 85%; position: relative;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>Balance History</h3>
+                    <div class="dropdown">
+                        <button class="dropbtn">Compare <i class="fa fa-caret-down"></i></button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="loadComparisonData('May')">May</a>
+                            <a href="#" onclick="loadComparisonData('April')">April</a>
+                            <a href="#" onclick="loadComparisonData('March')">March</a>
+                            <a href="#" onclick="loadComparisonData('February')">February</a>
+                            <a href="#" onclick="loadComparisonData('January')">January</a>
+                            <a href="#" onclick="loadComparisonData('December')">December</a>
+                            <a href="#" onclick="removeComparisonData()">Clear</a>
+                        </div>
+                    </div>
+                </div>
+                <canvas id="balanceHistoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pie Chart for Spending Categories
+        const spendingCategoriesData = {
+            labels: ['Housing', 'Food & Dining', 'Entertainment', 'Transport', 'Shopping', 'Utilities'],
+            datasets: [{
+                data: [1000, 500, 200, 300, 400, 400],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FFA500'],
+                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FFA500']
+            }]
+        };
+
+        const spendingCategoriesCtx = document.getElementById('spendingCategoriesChart').getContext('2d');
+        new Chart(spendingCategoriesCtx, {
+            type: 'pie',
+            data: spendingCategoriesData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Initial chart data for the current month
+        const balanceHistoryData = {
+            labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+            datasets: [{
+                label: 'Income (£)',
+                data: [1500, 1400, 1300, 1250, 1200, 1180, 1600],
+                borderColor: '#4BC0C0',
+                tension: 0.1,
+                fill: false,
+            }, {
+                label: 'Expenses (£)',
+                data: [800, 900, 1100, 1150, 1200, 1150, 1000],
+                borderColor: '#FF6384',
+                tension: 0.1,
+                fill: false,
+            }]
+        };
+
+        const comparisonData = {
+                'May': {
+                    income: [1400, 1350, 1300, 1200, 1150, 1100, 1500],
+                    expenses: [750, 850, 1050, 1100, 1200, 1100, 950]
+                },
+                'April': {
+                    income: [1300, 1250, 1200, 1150, 1100, 1050, 1400],
+                    expenses: [700, 800, 950, 1000, 1100, 1050, 900]
+                },
+                // Add more months as needed...
+            };
+
+        let comparisonDatasetId = null;
+
+        // Function to load comparison data
+        function loadComparisonData(month) {
+
+            const selectedMonthData = comparisonData[month];
+
+            if (selectedMonthData) {
+                balanceHistoryChart.data.datasets[2] = {
+                    label: month + ' Income (£)',
+                    data: selectedMonthData.income,
+                    borderColor: '#4BC0C0',
+                    borderDash: [5, 5], // Dashed line
+                    tension: 0.1,
+                    fill: false,
+                    compare: true,
+                };
+                balanceHistoryChart.data.datasets[3] = {
+                    label: month + ' Expenses (£)',
+                    data: selectedMonthData.expenses,
+                    borderColor: '#FF6384',
+                    borderDash: [5, 5], // Dashed line
+                    tension: 0.1,
+                    fill: false,
+                    compare: true,
+                };
+
+                comparisonDatasetId = balanceHistoryChart.data.datasets.length -2;
+
+                balanceHistoryChart.update();
+            }
+        }
+
+        function removeComparisonData() {
+            if (comparisonDatasetId !== null) {
+                balanceHistoryChart.data.datasets.splice(comparisonDatasetId, 2);
+                comparisonDatasetId = null;
+
+                balanceHistoryChart.update();
+            }
+        }
+
+        // Create the initial chart
+        const balanceHistoryCtx = document.getElementById('balanceHistoryChart').getContext('2d');
+        const balanceHistoryChart = new Chart(balanceHistoryCtx, {
+            type: 'line',
+            data: balanceHistoryData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 2000
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -21,7 +21,7 @@ p {
 .wrapper {
     display: flex;
     justify-content: center;
-    min-height: calc(100vh - 60px); /* Full height minus the navbar */
+    min-height: calc(100vh - 60px); 
     background: rgba(0, 255, 42, 0.4);
     padding-bottom: 25px;
     margin-top: 80px;
@@ -107,26 +107,48 @@ p {
     margin-bottom: 20px; /* Spacing between links */
 }
 
-.nav-menu ul li .link {
+.link {
     text-decoration: none;
-    font-weight: 500;
-    color: black;
+    color: black; /* Normal link color */
     display: block;
-    padding: 10px;
     font-size: 18px;
-}
-
-.nav-menu li a:hover {
-    color: #c27fff;
+    padding: 10px 15px;
     transition: color 0.3s ease;
 }
 
+/* Collapse button styling */
+.collapse-btn {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: black;
+    transition: transform 0.3s ease;
+}
 
+/* Collapse button when collapsed */
+.side-nav.collapsed .collapse-btn {
+    transform: rotate(180deg);
+}
 
-/* .link.active {
-    color: #c27fff;
-    border-bottom: 2px solid #8A2BE2FF;
-} */
+.link.active {
+    background-color: #f3f3ff; /* Lighter background color */
+    color: black; /* Active text color */
+    border-radius: 15px; /* Rounded container */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
+    padding: 10px 15px; /* Padding to make the container more prominent */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+/* Hover effect for all links, including the active one */
+.link:hover {
+    background-color: #f3f3ff; /* Same lighter background on hover */
+    color: black; /* Hover text color */
+    border-radius: 15px; /* Ensure the rounded effect on hover */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Shadow on hover */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
 
 .hamburger {
     display: none;
@@ -274,7 +296,21 @@ li {
     background-color: #f4f4f9;
     padding: 20px;
     border-radius: 10px;
+    margin-bottom: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container-rounded-pointer {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.6s ease, box-shadow 0.6s ease;
+    cursor: pointer;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.container-rounded-pointer:hover {
+    transform: scale(1.02); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
 }
 
 /* Dark Mode Styling */

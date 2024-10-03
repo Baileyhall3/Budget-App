@@ -83,10 +83,7 @@
     <div class="content-wrapper">
         <div style="width: 80%;">
             <div style="margin-bottom: 30px; align-self: self-start;">
-                <div style="text-align: start;">
-                    <h2>My Accounts</h2>
-                </div>
-                <div class="account-container">
+                <div id="barclays-account" class="account-container container-rounded-pointer" style="margin-top: 40px;">
                     <div class="chart-container">
                         <canvas id="account1-chart"></canvas>
                     </div>
@@ -124,7 +121,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="account-container">
+                <div class="account-container container-rounded-pointer">
                     <div class="chart-container">
                         <canvas id="account1-chart"></canvas>
                     </div>
@@ -162,7 +159,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="account-container">
+                <div class="account-container container-rounded-pointer">
                     <div class="chart-container">
                         <canvas id="account1-chart"></canvas>
                     </div>
@@ -233,6 +230,14 @@
             data: data,
             options: options
         });
+
+        const accountLink = document.getElementById('barclays-account');
+        accountLink.addEventListener('click', openAccountPage);
+
+        function openAccountPage() {
+            window.location.href = 'account.html';
+        }
+
     </script>
 </body>
 </html>

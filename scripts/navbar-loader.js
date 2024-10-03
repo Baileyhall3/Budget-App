@@ -4,26 +4,37 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(html => {
             document.getElementById("navbar-placeholder").innerHTML = html;
 
-            var currentPath = window.location.pathname;
+            // JavaScript to highlight the active link based on current page
+            const currentPath = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.nav-menu a'); // Select all nav links
 
-            var homeLink = document.getElementById("home-link");
-            var potsLink = document.getElementById("pots-link");
-            var budgetLink = document.getElementById("budget-link");
-            var reportsLink = document.getElementById("reports-link");
-            var settingsLink = document.getElementById("settings-link");
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active'); // Add active class to the current page's link
+                }
+            });
 
-            // Determine which link should be active based on the current page
-            if (currentPath.includes("index.html")) {
-                homeLink.classList.add("active");
-            } else if (currentPath.includes("pots.html")) {
-                potsLink.classList.add("active");
-            } else if (currentPath.includes("budget.html")) {
-                budgetLink.classList.add("active");
-            } else if (currentPath.includes("reports.html")) {
-                reportsLink.classList.add("active");
-            } else if (currentPath.includes("settings.html")) {
-                settingsLink.classList.add("active");
-            }
+            // var currentPath = window.location.pathname;
+
+            // var homeLink = document.getElementById("home-link");
+            // var savingsLink = document.getElementById("savings-link");
+            // var accountsLink = document.getElementById("accounts-link");
+            // var reportsLink = document.getElementById("reports-link");
+            // var settingsLink = document.getElementById("settings-link");
+
+            // if (currentPath.includes("index.html")) {
+            //     homeLink.classList.add("active");
+            // } else if (currentPath.includes("savings.html")) {
+            //     savingsLink.classList.add("active");
+            // } else if (currentPath.includes("accounts.html")) {
+            //     accountsLink.classList.add("active");
+            // } else if (currentPath.includes("budget.html")) {
+            //     budgetLink.classList.add("active");
+            // } else if (currentPath.includes("reports.html")) {
+            //     reportsLink.classList.add("active");
+            // } else if (currentPath.includes("settings.html")) {
+            //     settingsLink.classList.add("active");
+            // }
 
             // Collapse/Expand functionality
             var nav = document.getElementById('side-nav');
