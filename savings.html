@@ -16,16 +16,8 @@
 
         .flex-container {
             display: flex;
-            /* justify-content: space-between; */
-            width: calc(100% - 40px);
-            /* margin: 40px auto; */
             gap: 40px; /* Space between pots */
-            transition: margin-left 0.3s ease;
             width: 100%;
-        }
-
-        .side-nav.collapsed ~ .flex-container {
-            margin-left: 50px; 
         }
 
         .content-wrapper {
@@ -43,9 +35,14 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 1000px;
             margin-bottom: 30px; /* Space between charts */
-            margin-top: 30px;
+        }
+
+        .chart-wrapper {
+            display: flex; /* Use flexbox for the chart section */
+            justify-content: space-between; /* Space the charts evenly */
+            gap: 40px; /* Space between chart containers */
+            margin-top: 70px;
         }
 
         .side-container {
@@ -90,16 +87,26 @@
     <div id="navbar-placeholder"></div>
         
     <div class="content-wrapper">
-        <!-- Line Chart Section -->
-        <div class="chart-container">
-            <h5>Savings History</h5>
-            <canvas id="savings-chart"></canvas>
+        <!-- Chart Section -->
+        <div class="chart-wrapper" style="width: 1360px;">
+            <!-- Savings History Chart -->
+            <div class="chart-container" style="width: 60%;">
+                <h5>Savings History</h5>
+                <canvas id="savings-chart"></canvas>
+            </div>
+
+            <!-- Savings by Account Chart -->
+            <div class="chart-container" style="width: 500px;">
+                <h5>Savings by Account</h5>
+                <canvas id="savingsByAccountChart" height="250"></canvas>
+            </div>
         </div>
 
-        <div>
+        <div style="width: 1360px;">
             <div style="margin-bottom: 30px; align-self: self-start;">
-                <div style="text-align: start;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h2>My Pots</h2>
+                    <h3><a class="link" href="pots.html">View All</a></h3>
                 </div>
                 <div class="flex-container">
                     <div class="side-container">
@@ -131,8 +138,9 @@
             </div>
             
             <div style="margin-bottom: 30px; align-self: self-start;">
-                <div style="text-align: start;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h2>My Budgets</h2>
+                    <h3><a class="link" href="budgets.html">View All</a></h3>
                 </div>
                 <div class="flex-container">
                     <div class="side-container">
@@ -214,9 +222,9 @@
         createDoughnutChart('pot4-chart', 50, 200); 
         createDoughnutChart('pot5-chart', 10, 100);
 
-        // Line Chart Data
-        const ctx = document.getElementById('savings-chart').getContext('2d');
-        const savingsChart = new Chart(ctx, {
+        // Line Chart Data for Savings History
+        const ctxSavings = document.getElementById('savings-chart').getContext('2d');
+        const savingsChart = new Chart(ctxSavings, {
             type: 'line',
             data: {
                 labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
@@ -226,14 +234,12 @@
                         data: [2000, 1800, 1500, 1700, 1900, 2000],
                         borderColor: 'rgba(75, 192, 192, 1)',
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        // fill: true,
                     },
                     {
                         label: 'Amount Used',
                         data: [1800, 1600, 1400, 1300, 1600, 1900],
                         borderColor: 'rgba(255, 99, 132, 1)',
                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        // fill: true,
                     }
                 ]
             },
@@ -243,6 +249,48 @@
                     y: {
                         beginAtZero: true,
                         max: 2000 // Setting y-axis max value to 2000
+                    }
+                }
+            }
+        });
+
+        // Bar Chart Data for Savings by Account
+        const ctxAccount = document.getElementById('savingsByAccountChart').getContext('2d');
+        const savingsByAccountChart = new Chart(ctxAccount, {
+            type: 'bar',
+            data: {
+                labels: ['Account 1', 'Account 2', 'Account 3'], // Replace with your account names
+                datasets: [{
+                    label: 'Savings',
+                    data: [550, 150, 80], // Replace with actual savings values
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Amount (£)' // Y-axis title
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Accounts' // X-axis title
+                        }
                     }
                 }
             }
