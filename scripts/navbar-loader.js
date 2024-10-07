@@ -13,30 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     link.classList.add('active'); // Add active class to the current page's link
                 }
             });
-
-            // var currentPath = window.location.pathname;
-
-            // var homeLink = document.getElementById("home-link");
-            // var savingsLink = document.getElementById("savings-link");
-            // var accountsLink = document.getElementById("accounts-link");
-            // var reportsLink = document.getElementById("reports-link");
-            // var settingsLink = document.getElementById("settings-link");
-
-            // if (currentPath.includes("index.html")) {
-            //     homeLink.classList.add("active");
-            // } else if (currentPath.includes("savings.html")) {
-            //     savingsLink.classList.add("active");
-            // } else if (currentPath.includes("accounts.html")) {
-            //     accountsLink.classList.add("active");
-            // } else if (currentPath.includes("budget.html")) {
-            //     budgetLink.classList.add("active");
-            // } else if (currentPath.includes("reports.html")) {
-            //     reportsLink.classList.add("active");
-            // } else if (currentPath.includes("settings.html")) {
-            //     settingsLink.classList.add("active");
-            // }
-
-            // Collapse/Expand functionality
+            
             var nav = document.getElementById('side-nav');
             var collapseBtn = document.getElementById('collapse-btn');
 
@@ -77,4 +54,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
         })
         .catch(error => console.error('Error loading navbar:', error));
+
+    // New Account Modal
+    // Get the modal
+    const modal = document.getElementById("newAccountModal");
+
+    // Get the 'Add Account' button inside the dropdown (with the correct ID)
+    const addAccountLink = document.getElementById("addAccount");
+
+    // Get the <span> element that closes the modal
+    const span = document.getElementsByClassName("close")[0];
+
+    // Get the account type and joining partner field
+    const accountType = document.getElementById("accountType");
+    const joiningPartner = document.getElementById("joiningPartner");
+
+    // When the user clicks 'Add Account', open the modal 
+    addAccountLink.onclick = function(event) {
+        event.preventDefault(); // Prevent default action of <a> tag
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Enable/Disable Joining Partner based on Account Type
+    accountType.addEventListener('change', function() {
+        if (accountType.value === 'joint') {
+            joiningPartner.disabled = false; // Enable if Joint is selected
+        } else {
+            joiningPartner.disabled = true; // Disable otherwise
+            joiningPartner.value = ''; // Clear the input if disabled
+        }
+    });
 });

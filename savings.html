@@ -9,6 +9,8 @@
     <link rel="icon" type="image/x-icon" href="images/money-bag.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="scripts/navbar-loader.js" defer></script>
+    <link rel="stylesheet" href="modal-styling.css">
+    <script src="scripts/modals.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,14 +30,6 @@
             margin: 0 auto; /* Center the wrapper */
             margin-left: 250px;
             transition: margin-left 0.3s ease;
-        }
-
-        .chart-container {
-            background-color: #f4f4f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px; /* Space between charts */
         }
 
         .chart-wrapper {
@@ -91,22 +85,22 @@
         <div class="chart-wrapper" style="width: 1360px;">
             <!-- Savings History Chart -->
             <div class="chart-container" style="width: 60%;">
-                <h5>Savings History</h5>
+                <h3>Savings History</h3>
                 <canvas id="savings-chart"></canvas>
             </div>
 
             <!-- Savings by Account Chart -->
             <div class="chart-container" style="width: 500px;">
-                <h5>Savings by Account</h5>
+                <h3>Savings by Account</h3>
                 <canvas id="savingsByAccountChart" height="250"></canvas>
             </div>
         </div>
 
-        <div style="width: 1360px;">
+        <div style="max-width: 1360px;">
             <div style="margin-bottom: 30px; align-self: self-start;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h2>My Pots</h2>
-                    <h3><a class="link" href="pots.html">View All</a></h3>
+                    <h3><a id="addPot" class="link" href="#">Add New</a></h3>
                 </div>
                 <div class="flex-container">
                     <div class="side-container" data-type="pot">
@@ -140,7 +134,7 @@
             <div style="margin-bottom: 30px; align-self: self-start;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h2>My Budgets</h2>
-                    <h3><a class="link" href="budgets.html">View All</a></h3>
+                    <h3><a id="addBudget" class="link" href="#">Add New</a></h3>
                 </div>
                 <div class="flex-container">
                     <div class="side-container" data-type="budget">
@@ -165,6 +159,84 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!--New Pot Modal-->
+    <div id="newPotModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>New Pot</h2>
+            </div>
+            
+            <form id="newAccountForm">
+                <label for="accountName">Account Name:</label>
+                <input type="text" id="accountName" name="accountName" required>
+            
+                <label for="defaultCurrency">Default Currency:</label>
+                <select id="defaultCurrency" name="defaultCurrency" required>
+                    <option value="£">£ - British Pound</option>
+                    <option value="€">€ - Euro</option>
+                </select>
+            
+                <label for="accountType">Account Type:</label>
+                <select id="accountType" name="accountType" required>
+                    <option value="personal">Personal</option>
+                    <option value="savings">Savings</option>
+                    <option value="joint">Joint</option>
+                </select>
+            
+                <!-- Joining Partner Field (Disabled unless 'Joint' is selected) -->
+                <label for="joiningPartner">Joining Partner:</label>
+                <input type="text" id="joiningPartner" name="joiningPartner" disabled>
+            
+                <label for="defaultAccount">
+                    <input type="checkbox" id="defaultAccount" name="defaultAccount">
+                    Make this my default account
+                </label>
+            
+                <button type="submit" class="btn">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!--New Account Modal-->
+    <div id="newBudgetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>New Budget</h2>
+            </div>
+            
+            <form id="newAccountForm">
+                <label for="accountName">Account Name:</label>
+                <input type="text" id="accountName" name="accountName" required>
+            
+                <label for="defaultCurrency">Default Currency:</label>
+                <select id="defaultCurrency" name="defaultCurrency" required>
+                    <option value="£">£ - British Pound</option>
+                    <option value="€">€ - Euro</option>
+                </select>
+            
+                <label for="accountType">Account Type:</label>
+                <select id="accountType" name="accountType" required>
+                    <option value="personal">Personal</option>
+                    <option value="savings">Savings</option>
+                    <option value="joint">Joint</option>
+                </select>
+            
+                <!-- Joining Partner Field (Disabled unless 'Joint' is selected) -->
+                <label for="joiningPartner">Joining Partner:</label>
+                <input type="text" id="joiningPartner" name="joiningPartner" disabled>
+            
+                <label for="defaultAccount">
+                    <input type="checkbox" id="defaultAccount" name="defaultAccount">
+                    Make this my default account
+                </label>
+            
+                <button type="submit" class="btn">Create Account</button>
+            </form>
         </div>
     </div>
 
@@ -306,9 +378,9 @@
 
                 // Redirect based on the type (pot or budget)
                 if (type === 'pot') {
-                    window.location.href = 'pot.html'; // Redirect to pots page
+                    window.location.href = 'pot.html'; 
                 } else if (type === 'budget') {
-                    window.location.href = 'budget.html'; // Redirect to budgets page
+                    window.location.href = 'budget.html';
                 }
             });
         });

@@ -46,16 +46,6 @@
             margin-left: 200px;
         }
 
-        .chart-container {
-            /* background-color: white; */
-            background-color: #f4f4f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            width: 100%;
-        }
-
         .side-container-group {
             display: flex;
             flex-direction: column; 
@@ -103,9 +93,9 @@
             cursor: pointer;
         }
 
-        button:hover {
+        /* button:hover {
             background-color: #45a049;
-        }
+        } */
 
         #budget-list {
             list-style: none;
@@ -186,7 +176,7 @@
                 <h5 style="font-size: 36px; color: #45a049;" id="total-display">£2000</h5>
             </div>
 
-            <div class="chart-container">
+            <div class="chart-container" style="width: 100%;">
                 <canvas id="myChart"></canvas>
             </div>
 

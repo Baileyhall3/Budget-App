@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
     <script src="scripts/navbar-loader.js" defer></script>
+    <link rel="stylesheet" href="modal-styling.css">
+    <script src="scripts/modals.js"></script>
     <script src="scripts/shared.js"></script>
     <style>
         body {
@@ -25,7 +27,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 40px;
-            width: 100%;
+            /* width: 100%; */
         }
 
         .content-wrapper {
@@ -81,9 +83,13 @@
     <div id="navbar-placeholder"></div>
 
     <div class="content-wrapper">
-        <div style="width: 80%;">
+        <div style="width: 80%; margin-top: 40px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>My Accounts</h2>
+                <h3><a class="link" href="#" id="addAccount">Add New</a></h3>
+            </div>
             <div style="margin-bottom: 30px; align-self: self-start;">
-                <div id="barclays-account" class="account-container container-rounded-pointer" style="margin-top: 40px;">
+                <div id="barclays-account" class="account-container container-rounded-pointer">
                     <div class="account-chart-container">
                         <canvas id="account1-chart"></canvas>
                     </div>
@@ -198,6 +204,45 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!--New Account Modal-->
+    <div id="newAccountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>New Account</h2>
+            </div>
+            
+            <form id="newAccountForm">
+                <label for="accountName">Account Name:</label>
+                <input type="text" id="accountName" name="accountName" required>
+            
+                <label for="defaultCurrency">Default Currency:</label>
+                <select id="defaultCurrency" name="defaultCurrency" required>
+                    <option value="£">£ - British Pound</option>
+                    <option value="€">€ - Euro</option>
+                </select>
+            
+                <label for="accountType">Account Type:</label>
+                <select id="accountType" name="accountType" required>
+                    <option value="personal">Personal</option>
+                    <option value="savings">Savings</option>
+                    <option value="joint">Joint</option>
+                </select>
+            
+                <!-- Joining Partner Field (Disabled unless 'Joint' is selected) -->
+                <label for="joiningPartner">Joining Partner:</label>
+                <input type="text" id="joiningPartner" name="joiningPartner" disabled>
+            
+                <label for="defaultAccount">
+                    <input type="checkbox" id="defaultAccount" name="defaultAccount">
+                    Make this my default account
+                </label>
+            
+                <button type="submit" class="btn">Create Account</button>
+            </form>
         </div>
     </div>
     

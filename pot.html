@@ -26,8 +26,6 @@
             transition: margin-left 0.3s ease;
         }
 
-        
-
         .account-summary {
             margin-bottom: 30px;
         }
@@ -154,33 +152,6 @@
             gap: 40px;
         }
 
-        .chart-container {
-            background-color: #f4f4f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        /* Pie chart container (40% width) */
-        .spending-categories-container {
-            width: 40%;
-            background-color: #f4f4f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Bar chart container (60% width) */
-        .spending-overview-container {
-            width: 60%;
-            background-color: #f4f4f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-
         .chart-wrapper {
             width: 48%;
             display: inline-block;
@@ -276,13 +247,13 @@
                 </div>
                 <div class="charts-wrapper">
                     <!-- Pie Chart Container -->
-                    <div class="spending-categories-container chart-container">
+                    <div class="chart-container" style="width: 40%;">
                         <h3>Savings so Far</h3>
                         <canvas id="spendingCategoriesChart"></canvas>
                     </div>
                 
                     <!-- Bar Chart Container -->
-                    <div class="spending-overview-container chart-container">
+                    <div class="chart-container" style="width: 60%;">
                         <h3>Savings Over the Last 7 Days</h3>
                         <canvas id="spendingBarChart" height="200"></canvas>
                     </div>
