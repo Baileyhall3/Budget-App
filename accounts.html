@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounts Page</title>
+    <title>Accounts</title>
     <link rel="stylesheet" href="styling.css">
     <link rel="icon" type="image/x-icon" href="images/money-bag.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
     <script src="scripts/navbar-loader.js" defer></script>
-    <link rel="stylesheet" href="modal-styling.css">
     <script src="scripts/modals.js"></script>
     <script src="scripts/shared.js"></script>
     <style>
@@ -42,15 +41,11 @@
 
         .account-chart-container {
             width: 50%;
+            height: auto;
         }
 
         .account-details {
             width: 45%;
-        }
-
-        .account-details h5 {
-            font-size: 24px;
-            margin-bottom: 20px;
         }
 
         .transaction {
@@ -86,15 +81,53 @@
         <div style="width: 80%; margin-top: 40px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>My Accounts</h2>
-                <h3><a class="link" href="#" id="addAccount">Add New</a></h3>
+                <h3><a class="link" onclick="openModal('newAccountModal')" href="#" id="addAccount">Add New</a></h3>
             </div>
             <div style="margin-bottom: 30px; align-self: self-start;">
                 <div id="barclays-account" class="account-container container-rounded-pointer">
                     <div class="account-chart-container">
+                        <canvas class="chart1" id="account1-chart"></canvas>
+                    </div>
+                    <div class="account-details">
+                        <h5 class="account-title">Barclays</h5>
+                        <div class="transaction">
+                            <div class="money-bar-header">
+                                <h5 class="transaction-name expense">Greggs</h5>
+                                <p class="transaction-amount expense">- £3.40</p>
+                            </div>
+                            <div class="money-bar-header" style="margin-bottom: 20px;">
+                                <h5 class="transaction-category expense">Food</h5>
+                                <p class="transaction-time expense">4 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="transaction">
+                            <div class="money-bar-header">
+                                <h5 class="transaction-name expense">Pizza Grande</h5>
+                                <p class="transaction-amount expense">- £44.40</p>
+                            </div>
+                            <div class="money-bar-header" style="margin-bottom: 20px;">
+                                <h5 class="transaction-category expense">Food</h5>
+                                <p class="transaction-time expense">Yesterday</p>
+                            </div>
+                        </div>
+                        <div class="transaction">
+                            <div class="money-bar-header">
+                                <h5 class="transaction-name">Deposit</h5>
+                                <p class="transaction-amount income">£2,000</p>
+                            </div>
+                            <div class="money-bar-header" style="margin-bottom: 20px;">
+                                <h5 class="transaction-category expense">Paycheck</h5>
+                                <p class="transaction-time expense">2 days ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="account-container container-rounded-pointer">
+                    <div class="account-chart-container">
                         <canvas id="account1-chart"></canvas>
                     </div>
                     <div class="account-details">
-                        <h5>Barclays</h5>
+                        <h5 class="account-title">Monzo</h5>
                         <div class="transaction">
                             <div class="money-bar-header">
                                 <h5 style="font-size: 18px; margin: 0; color: rgb(131, 131, 131);">Greggs</h5>
@@ -132,45 +165,7 @@
                         <canvas id="account1-chart"></canvas>
                     </div>
                     <div class="account-details">
-                        <h5>Monzo</h5>
-                        <div class="transaction">
-                            <div class="money-bar-header">
-                                <h5 style="font-size: 18px; margin: 0; color: rgb(131, 131, 131);">Greggs</h5>
-                                <p style="font-size: 20px; margin: 0;">- £3.40</p>
-                            </div>
-                            <div class="money-bar-header" style="margin-bottom: 20px;">
-                                <h5 style="font-size: 16px; margin: 0; color: rgb(131, 131, 131); font-weight: 100;">Food</h5>
-                                <p style="font-size: 14px; margin: 0;">4 hours ago</p>
-                            </div>
-                        </div>
-                        <div class="transaction">
-                            <div class="money-bar-header">
-                                <h5 style="font-size: 18px; margin: 0; color: rgb(131, 131, 131);">Pizza Grande</h5>
-                                <p style="font-size: 20px; margin: 0;">- £44.40</p>
-                            </div>
-                            <div class="money-bar-header" style="margin-bottom: 20px;">
-                                <h5 style="font-size: 16px; margin: 0; color: rgb(131, 131, 131); font-weight: 100;">Food</h5>
-                                <p style="font-size: 14px; margin: 0;">Yesterday</p>
-                            </div>
-                        </div>
-                        <div class="transaction">
-                            <div class="money-bar-header">
-                                <h5 style="font-size: 18px; margin: 0;">Deposit</h5>
-                                <p style="font-size: 20px; margin: 0; color: #45a049">£2,000</p>
-                            </div>
-                            <div class="money-bar-header" style="margin-bottom: 20px;">
-                                <h5 style="font-size: 16px; margin: 0; color: rgb(131, 131, 131); font-weight: 100;">Paycheck</h5>
-                                <p style="font-size: 14px; margin: 0;">2 days ago</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="account-container container-rounded-pointer">
-                    <div class="account-chart-container">
-                        <canvas id="account1-chart"></canvas>
-                    </div>
-                    <div class="account-details">
-                        <h5>Joint Account</h5>
+                        <h5 class="account-title">Joint Account</h5>
                         <div class="transaction">
                             <div class="money-bar-header">
                                 <h5 style="font-size: 18px; margin: 0; color: rgb(131, 131, 131);">Greggs</h5>
@@ -206,46 +201,6 @@
             </div>
         </div>
     </div>
-
-    <!--New Account Modal-->
-    <div id="newAccountModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>New Account</h2>
-            </div>
-            
-            <form id="newAccountForm">
-                <label for="accountName">Account Name:</label>
-                <input type="text" id="accountName" name="accountName" required>
-            
-                <label for="defaultCurrency">Default Currency:</label>
-                <select id="defaultCurrency" name="defaultCurrency" required>
-                    <option value="£">£ - British Pound</option>
-                    <option value="€">€ - Euro</option>
-                </select>
-            
-                <label for="accountType">Account Type:</label>
-                <select id="accountType" name="accountType" required>
-                    <option value="personal">Personal</option>
-                    <option value="savings">Savings</option>
-                    <option value="joint">Joint</option>
-                </select>
-            
-                <!-- Joining Partner Field (Disabled unless 'Joint' is selected) -->
-                <label for="joiningPartner">Joining Partner:</label>
-                <input type="text" id="joiningPartner" name="joiningPartner" disabled>
-            
-                <label for="defaultAccount">
-                    <input type="checkbox" id="defaultAccount" name="defaultAccount">
-                    Make this my default account
-                </label>
-            
-                <button type="submit" class="btn">Create Account</button>
-            </form>
-        </div>
-    </div>
-    
 
     <script>
 
@@ -263,6 +218,8 @@
             }]
         };
         const options = {
+            responsive: true, // Keep the chart responsive
+            maintainAspectRatio: false, 
             scales: {
                 y: {
                     beginAtZero: true,

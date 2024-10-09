@@ -9,6 +9,7 @@
     <link rel="icon" type="image/x-icon" href="images/money-bag.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="scripts/navbar-loader.js" defer></script>
+    <script src="scripts/shared.js"></script>
     <style>
 
         .flex-container {
@@ -18,7 +19,6 @@
             margin: 40px auto;
             margin-top: 70px;
             gap: 20px;
-            margin-left: 250px;
             transition: margin-left 0.3s ease;
         }
 
@@ -32,7 +32,6 @@
             /* padding: 20px; */
             font-size: 24px;
             font-weight: bold;
-            margin-bottom: 30px;
             /* margin-top: 40px; */
             display: none;
         }
@@ -42,7 +41,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 50%;
             margin-left: 200px;
         }
 
@@ -57,22 +55,6 @@
         .side-container canvas {
             width: 100%;
             height: auto;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        input[type="color"] {
-            padding: 10px;
-            margin-bottom: 10px;
-            width: 200px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
         }
 
         button {
@@ -163,63 +145,76 @@
             margin-top: 10px;
         }
 
+        .spending-categories-container {
+            width: 40%;
+            background-color: #f4f4f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
 </head>
 <body>
     <div id="navbar-placeholder"></div>
         
     <div class="flex-container">
-
-        <div class="content-wrapper">
-            <div class="total-value-container">
-                <h5 style="font-size: 24px" id="title-display">My Budget Title</h5>
-                <h5 style="font-size: 36px; color: #45a049;" id="total-display">£2000</h5>
+        <div class="content-wrapper" style="align-self: start;">
+            <div style="width: 80%;">
+                <div class="chart-container">
+                    <h3 id="title-display">Current Budget - £1500 / £2000</h3>
+                    <div id="money-bar">
+                        <div class="money-pot green" style="width: 75%;">
+                            <div class="actual-value">75%</div>
+                        </div>
+                        <div class="money-pot remaining" style="width: 25%;">
+                            <div class="actual-value">25%</div>
+                        </div>
+                    </div>
+                
+                    <!-- Separate container for today-marker -->
+                    <div class="marker-container">
+                        <div id="today-marker" class="today-marker">
+                            <div class="today-label">Today</div>
+                        </div>
+                    </div>
+                
+                    <!-- <h3 id="budget-period">Time Period: <span class="time-period-dates">15/09/2024 - 15/10/2024</span></h3> -->
+                </div>
+                <div class="charts-wrapper">
+                    <div class="spending-categories-container chart-container">
+                        <h3>Spending Breakdown by Category</h3>
+                        <canvas id="spending-chart"></canvas>
+                        
+                        <div class="account-summary">
+                            <p>Total Spent Last 30 Days: £2,800</p>
+                            <p>Largest Transaction: £400 (Rent)</p>
+                            <p>Most Spent Category: Housing</p>
+                        </div>
+                    </div>
+                
+                    <div class="chart-container" style="width: 60%;">
+                        <h3>Savings by Account</h3>
+                        <canvas id="savingsByAccountChart" height="250"></canvas>
+                    </div>
+                </div>            
             </div>
-
-            <div class="chart-container" style="width: 100%;">
-                <canvas id="myChart"></canvas>
-            </div>
-
-            <form id="budget-form">
-                <input type="number" id="total-amount" placeholder="Total (£)" min="0">
-                <input type="text" id="pot-title" placeholder="My budget">
-                <input type="text" id="item-name" placeholder="Item Name" required>
-                <input type="number" id="item-value" placeholder="Item Value (£)" required min="0">
-                <input type="color" id="item-color" placeholder="Item Color" required>
-                <button type="button" id="add-item-btn">Add Item</button>
-            </form>
-
-            <ul id="budget-list"></ul>
         </div>
 
         <div class="side-container-group">
-            <!-- <div class="side-container container-rounded" id="alerts-container">
-                <div class="money-bar-header">
-                    <h5 style="font-size: 18px; margin: 0;">Alerts</h5>
-                    <button class="alerts-btn" style="font-size:16px; margin: 0;">2 <i class="fa fa-bell"></i></button>
+            <div class="container-rounded container-rounded-pointer" id="alerts-container">
+                <div class="money-bar-header" style="margin-bottom: 0px;">
+                    <h5 style="font-size: 24px; margin: 0;">Alerts</h5>
+                    <button class="alerts-btn" style="font-size:20px; margin: 0;">2 <i class="fa fa-bell"></i></button>
                 </div>
                 <p class="truncate" style="font-size: 16px; margin: 0;">First new alert states you should stop spending all your money.</p>
                 <ul id="alerts-list" >
                     <li>Alert 1: Spend wisely!</li>
                     <li>Alert 2: You’re almost out of budget!</li>
                 </ul>
-            </div> -->
-            <div class="container-rounded container-rounded-pointer">
-                <div class="money-bar-header">
-                    <h5 style="font-size: 18px; margin: 0;">Current Budget</h5>
-                    <p style="font-size: 16px; margin: 0;">£25 left</p>
-                </div>
-                <div id="money-bar">
-                    <div class="money-pot green" style="width: 75%;">
-                        <div class="actual-value">75%</div>
-                    </div>
-                    <div class="money-pot remaining" style="width: 25%;">
-                        <div class="actual-value">25%</div>
-                    </div>
-                </div>
             </div>
 
-            <div class="container-rounded container-rounded-pointer">
+            <div class="container-rounded container-rounded-pointer" data-type="transaction">
                 <h5 style="font-size: 24px;">Recent Transactions</h5>
                 <div class="transaction">
                     <div class="money-bar-header" style="margin-top: 20px;">
@@ -251,12 +246,9 @@
                         <p style="font-size: 14px; margin: 0;">2 days ago</p>
                     </div>
                 </div>
-                <!-- <div class="transaction" style="margin-top: 20px;">
-                    <a>View All</a>
-                </div> -->
-                
             </div>
-            <div class="container-rounded container-rounded-pointer">
+
+            <div class="container-rounded container-rounded-pointer" data-type="account">
                 <h5 style="font-size: 24px;">My Accounts</h5>
                 <div class="transaction">
                     <div class="money-bar-header" style="margin-top: 20px;">
@@ -290,129 +282,71 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
 
     <script>
-        // Initialize defaults
-        const budgetItems = [];
-        let totalAmount = 2000; 
-        let potTitle = "My Budget Title"; 
-        let chart;
-    
-        // Create initial chart
-        function createChart() {
-            const ctx = document.getElementById('myChart').getContext('2d');
-            
-            chart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        data: [],
-                        backgroundColor: [],
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    const label = chart.data.labels[tooltipItem.dataIndex];
-                                    const value = chart.data.datasets[0].data[tooltipItem.dataIndex];
-                                    return `${label}: £${value.toLocaleString()}`;
-                                }
-                            }
+        const spendingCategoriesData = {
+            labels: ['Housing', 'Food & Dining', 'Entertainment', 'Transport', 'Shopping', 'Utilities'],
+            datasets: [{
+                data: [1000, 500, 200, 300, 400, 400],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FFA500'],
+                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FFA500']
+            }]
+        };
+
+        // pie chart for recent spending
+        const spendingCategoriesCtx = document.getElementById('spending-chart').getContext('2d');
+        new Chart(spendingCategoriesCtx, {
+            type: 'pie',
+            data: spendingCategoriesData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Bar Chart Data for Savings by Account
+        const ctxAccount = document.getElementById('savingsByAccountChart').getContext('2d');
+        const savingsByAccountChart = new Chart(ctxAccount, {
+            type: 'bar',
+            data: {
+                labels: ['Account 1', 'Account 2', 'Account 3'], // Replace with your account names
+                datasets: [{
+                    label: 'Savings',
+                    data: [550, 150, 80], // Replace with actual savings values
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Amount (£)' // Y-axis title
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Accounts' // X-axis title
                         }
                     }
                 }
-            });
-        }
-    
-        // Function to update the chart dynamically
-        function updateChart() {
-            // Extract labels, values, and colors from the budgetItems array
-            const labels = budgetItems.map(item => item.name);
-            const dataValues = budgetItems.map(item => item.value); // Use actual £ values
-            const colors = budgetItems.map(item => item.color);
-    
-            // Calculate remaining value in £
-            const totalUsed = dataValues.reduce((acc, val) => acc + val, 0);
-            const remainingValue = totalAmount - totalUsed;
-    
-            // If there's remaining value, add it to the chart with grey color
-            if (remainingValue > 0) {
-                labels.push('Remaining');
-                dataValues.push(remainingValue);
-                colors.push('rgb(200, 200, 200)');
             }
-    
-            chart.data.labels = labels;
-            chart.data.datasets[0].data = dataValues;
-            chart.data.datasets[0].backgroundColor = colors;
-    
-            // Update the chart with new data
-            chart.update();
-        }
-    
-        function updateDisplay() {
-            // Update title display
-            const titleDisplay = document.getElementById('title-display');
-            titleDisplay.textContent = potTitle;
-    
-            // Update total display
-            const totalDisplay = document.getElementById('total-display');
-            totalDisplay.textContent = `£${totalAmount.toLocaleString()}`;
-        }
-    
-        document.getElementById('add-item-btn').addEventListener('click', function (e) {
-            e.preventDefault();
-    
-            // Get form values
-            const itemName = document.getElementById('item-name').value;
-            const itemValue = parseFloat(document.getElementById('item-value').value);
-            const itemColor = document.getElementById('item-color').value;
-    
-            // Validate the total item value
-            const totalUsed = budgetItems.reduce((acc, item) => acc + item.value, 0) + itemValue;
-            if (totalUsed > totalAmount) {
-                alert('Total budget exceeds available amount. Adjust values.');
-                return;
-            }
-    
-            // Add the new budget item
-            budgetItems.push({
-                name: itemName,
-                value: itemValue,
-                color: itemColor
-            });
-    
-            // Clear form fields after adding
-            document.getElementById('item-name').value = '';
-            document.getElementById('item-value').value = '';
-            document.getElementById('item-color').value = '#000000';
-    
-            updateChart();
         });
-    
-        // Add event listener to update total amount and chart
-        document.getElementById('total-amount').addEventListener('change', function () {
-            totalAmount = parseFloat(this.value) || 2000; // Use input value or default
-            updateChart();
-            updateDisplay(); // Update total display when total amount changes
-        });
-    
-        // Add event listener to update pot title display
-        document.getElementById('pot-title').addEventListener('input', function () {
-            potTitle = this.value || "My Budget Title"; // Use input value or default
-            updateDisplay(); // Update title display
-        });
-    
-        // Initial chart render on page load
-        createChart();
-        updateChart();
-        updateDisplay(); // Initialize display on load
 
         const alertsContainer = document.getElementById('alerts-container');
         const alertsList = document.getElementById('alerts-list');
@@ -437,55 +371,20 @@
         // Add the click event listener to the container
         alertsContainer.addEventListener('click', toggleAlertsList);
 
-        function createDoughnutChart(chartId, actual, total) {
-            const ctx = document.getElementById(chartId).getContext('2d');
-            const percentage = (actual / total) * 100;
-            let actualColor;
+        const roundedContainers = document.querySelectorAll('.container-rounded');
+        roundedContainers.forEach(container => {
+            container.addEventListener('click', function() {
+                const type = container.getAttribute('data-type');
 
-            // Determine the color of the "actual" section based on the percentage
-            if (percentage > 75) {
-                actualColor = '#45a049'; // green
-            } else if (percentage > 25 && percentage <= 75) {
-                actualColor = '#FFA500'; // amber
-            } else {
-                actualColor = '#FF0000'; // red
-            }
-
-            // Create the doughnut chart
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        data: [actual, total - actual], // actual vs remaining
-                        backgroundColor: [actualColor, '#C0C0C0'], // actual and remaining colors
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    cutout: '70%', // Control the size of the doughnut hole
-                    plugins: {
-                        legend: {
-                            display: false // Hide the legend
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(tooltipItem) {
-                                    const label = tooltipItem.dataIndex === 0 ? 'Actual' : 'Remaining';
-                                    return `${label}: £${tooltipItem.raw}`;
-                                }
-                            }
-                        }
-                    }
+                if (type === 'budget') {
+                    window.location.href = 'budget.html';
+                } else if (type === 'transaction') {
+                    window.location.href = 'transactions.html';
+                } else if (type === 'account') {
+                    window.location.href = 'accounts.html';
                 }
             });
-        }
-
-        // Create charts for each pot
-        createDoughnutChart('pot1-chart', 550, 600); // Above 75% -> green
-        createDoughnutChart('pot2-chart', 150, 400); // Between 25% and 75% -> amber
-        createDoughnutChart('pot3-chart', 80, 500);  // Below 25% -> red
-        createDoughnutChart('pot4-chart', 50, 200);  // Below 25% -> red
+        });
     </script>
 </body>
 </html>

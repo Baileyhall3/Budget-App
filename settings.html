@@ -68,59 +68,66 @@
 
 <div id="navbar-placeholder"></div>
 
-<div class="settings-container">
-    <h2>SETTINGS</h2>
+<div class="flex-container">
+    <div class="settings-container">
+        <h2>SETTINGS</h2>
+        
+        <div style="border-bottom: 1px solid rgb(131 131 131);">
+            <!-- Default Currency -->
+            <div class="settings-section">
+                <h3>Default Currency</h3>
+                <select id="currency-selector" class="dropdown-select">
+                    <option value="GBP">British Pound (£)</option>
+                    <option value="USD">US Dollar ($)</option>
+                    <option value="EUR">Euro (€)</option>
+                </select>
+            </div>
     
-    <div style="border-bottom: 1px solid rgb(131 131 131);">
-        <!-- Default Currency -->
-        <div class="settings-section">
-            <h3>Default Currency</h3>
-            <select id="currency-selector" class="dropdown-select">
-                <option value="GBP">British Pound (£)</option>
-                <option value="USD">US Dollar ($)</option>
-                <option value="EUR">Euro (€)</option>
-            </select>
+            <!-- Default Account -->
+            <div class="settings-section">
+                <h3>Default Account</h3>
+                <select id="default-account" class="dropdown-select">
+                    <option value="barclays">Barclays</option>
+                    <option value="savings">Savings</option>
+                    <option value="monzo">Monzo</option>
+                </select>
+            </div>
         </div>
-
-        <!-- Default Account -->
-        <div class="settings-section">
-            <h3>Default Account</h3>
-            <select id="default-account" class="dropdown-select">
-                <option value="barclays">Barclays</option>
-                <option value="savings">Savings</option>
-                <option value="monzo">Monzo</option>
-            </select>
+        
+        <!-- Notification Preferences -->
+        <div class="notifications-section">
+            <h3>Notifications</h3>
+            <label><input type="checkbox" id="transaction-alerts" checked> Transaction Alerts</label><br>
+            <label><input type="checkbox" id="weekly-summary"> Weekly Summary</label><br>
+            <label><input type="checkbox" id="budget-alerts" checked> Budget Alerts</label>
         </div>
+    
+        <!-- Dark Mode -->
+        <div class="notifications-section">
+            <h3>Theme</h3>
+            <div>
+                <label><input type="radio" name="theme" value="light"> Light Mode</label><br>
+                <label><input type="radio" name="theme" value="dark"> Dark Mode</label><br>
+                <label><input type="radio" name="theme" value="auto" checked> Auto (System Default)</label>
+            </div>
+        </div>
+    </div>
 
-        <!-- Budget Period -->
-        <div class="settings-section">
-            <h3>Budget Period</h3>
-            <select id="budget-period" class="dropdown-select">
-                <option value="weekly">Weekly</option>
-                <option value="monthly" selected>Monthly</option>
-                <option value="bi-monthly">Bi-Monthly</option>
-            </select>
+    <div class="transaction-section">
+        <h3>Recurring Transactions</h3>
+
+        <div id="recurring-transactions-list"></div>
+
+        <!-- Pagination for Recurring Transactions -->
+        <div class="pagination">
+            <button id="prev-recurring-page">Previous</button>
+            <span id="recurring-page-info">Page 1</span>
+            <button id="next-recurring-page">Next</button>
         </div>
     </div>
     
-    <!-- Notification Preferences -->
-    <div class="notifications-section">
-        <h3>Notifications</h3>
-        <label><input type="checkbox" id="transaction-alerts" checked> Transaction Alerts</label><br>
-        <label><input type="checkbox" id="weekly-summary"> Weekly Summary</label><br>
-        <label><input type="checkbox" id="budget-alerts" checked> Budget Alerts</label>
-    </div>
-
-    <!-- Dark Mode -->
-    <div class="notifications-section">
-        <h3>Theme</h3>
-        <div>
-            <label><input type="radio" name="theme" value="light"> Light Mode</label><br>
-            <label><input type="radio" name="theme" value="dark"> Dark Mode</label><br>
-            <label><input type="radio" name="theme" value="auto" checked> Auto (System Default)</label>
-        </div>
-    </div>
 </div>
+
 
 <script>
     // Sample code to save settings (placeholder)
@@ -150,42 +157,121 @@
         // Save this value to localStorage or backend
     });
 
-    document.getElementById('budget-period').addEventListener('change', function() {
-        const selectedPeriod = this.value;
-        console.log('Budget period set to:', selectedPeriod);
-        // Save this value to localStorage or backend
-    });
+    // Dummy data for recurring transactions
+    const recurringTransactions = [
+        { name: 'Pay Check', amount: 2500, type: 'income', category: 'Pay Check', interval: 'monthly', date: '15th' },
+        { name: 'Amazon Prime', amount: 10.99, type: 'expense', category: 'Subscription', interval: 'monthly', date: '1st' },
+        { name: 'Soundcloud', amount: 10, type: 'expense', category: 'Subscription', interval: 'monthly', date: '1st' },
+        { name: 'Mortgage', amount: 1000, type: 'expense', category: 'Bills', interval: 'monthly', date: '25th' },
+        { name: 'Car', amount: 170, type: 'expense', category: 'Bills', interval: 'monthly', date: '1st' },
+        { name: 'Food', amount: 50, type: 'expense', category: 'Necessities', interval: 'weekly', date: '' },
+        { name: 'Fuel', amount: 70, type: 'expense', category: 'Necessities', interval: 'biweekly', date: '' },
+        { name: 'Date Night', amount: 100, type: 'expense', category: 'Leisure', interval: 'monthly', date: '' },
+    ];
 
-    // Toggle dark mode
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-    const body = document.body;
+    // Variables for pagination
+    let currentRecurringPage = 1;
+    const recurringTransactionsPerPage = 5; // You can adjust this number based on how many recurring transactions you want per page
 
-    // Check localStorage for saved dark mode preference
-    if (localStorage.getItem('dark-mode') === 'enabled') {
-        enableDarkMode();
+    // Function to load recurring transactions with pagination
+    function loadRecurringTransactions() {
+        const recurringTransactionList = document.getElementById('recurring-transactions-list');
+        recurringTransactionList.innerHTML = ''; // Clear current transactions
+
+        // Pagination logic
+        const startIndex = (currentRecurringPage - 1) * recurringTransactionsPerPage;
+        const endIndex = startIndex + recurringTransactionsPerPage;
+        const paginatedRecurringTransactions = recurringTransactions.slice(startIndex, endIndex);
+
+        // Display recurring transactions
+        paginatedRecurringTransactions.forEach(transaction => {
+            const transactionDiv = document.createElement('div');
+            transactionDiv.classList.add('transaction');
+
+            const headerDiv = document.createElement('div');
+            headerDiv.classList.add('money-bar-header');
+
+            const nameElement = document.createElement('h5');
+            nameElement.style.fontSize = '18px';
+            nameElement.style.margin = '0';
+            nameElement.textContent = transaction.name;
+
+            const amountElement = document.createElement('p');
+            amountElement.style.fontSize = '20px';
+            amountElement.style.margin = '0';
+            
+            // Format and style amount based on transaction type
+            if (transaction.type === 'income') {
+                amountElement.textContent = `+ £${Math.abs(transaction.amount).toFixed(2)}`;
+                amountElement.style.color = '#45a049'; // Green for income
+            } else if (transaction.type === 'expense') {
+                amountElement.textContent = `- £${Math.abs(transaction.amount).toFixed(2)}`;
+                amountElement.style.color = '#FF0000'; // Red for expenses
+            }
+
+            headerDiv.appendChild(nameElement);
+            headerDiv.appendChild(amountElement);
+            transactionDiv.appendChild(headerDiv);
+
+            const descriptionDiv = document.createElement('div');
+            descriptionDiv.classList.add('money-bar-header');
+
+            const categoryElement = document.createElement('h5');
+            categoryElement.style.fontSize = '16px';
+            categoryElement.style.margin = '0';
+            categoryElement.style.color = 'rgb(131, 131, 131)';
+            categoryElement.style.fontWeight = '100';
+            categoryElement.textContent = transaction.category;
+
+            const recurrenceElement = document.createElement('p');
+            recurrenceElement.style.fontSize = '14px';
+            recurrenceElement.style.margin = '0';
+
+            // Logic for displaying recurrence information
+            if (transaction.interval === 'monthly') {
+                recurrenceElement.textContent = transaction.date 
+                    ? `${transaction.date} of every month` 
+                    : 'Every Month';
+            } else if (transaction.interval === 'weekly') {
+                recurrenceElement.textContent = 'Every Week';
+            } else if (transaction.interval === 'biweekly') {
+                recurrenceElement.textContent = 'Every 2 Weeks';
+            }
+
+            descriptionDiv.appendChild(categoryElement);
+            descriptionDiv.appendChild(recurrenceElement);
+            transactionDiv.appendChild(descriptionDiv);
+
+            // Add the transactionDiv to the recurring transactions list
+            recurringTransactionList.appendChild(transactionDiv);
+        });
+
+        // Handle pagination display
+        const recurringPageInfo = document.getElementById('recurring-page-info');
+        recurringPageInfo.textContent = `Page ${currentRecurringPage} of ${Math.ceil(recurringTransactions.length / recurringTransactionsPerPage)}`;
+
+        // Disable or enable pagination buttons based on current page and total pages
+        document.getElementById('prev-recurring-page').disabled = currentRecurringPage === 1;
+        document.getElementById('next-recurring-page').disabled = currentRecurringPage * recurringTransactionsPerPage >= recurringTransactions.length;
     }
 
-    // Add event listener for the dark mode toggle button
-    darkModeToggle.addEventListener('click', () => {
-        console.log('working')
-        if (body.classList.contains('dark-mode')) {
-            disableDarkMode();
-        } else {
-            enableDarkMode();
+    // Event listeners for pagination buttons for recurring transactions
+    document.getElementById('prev-recurring-page').addEventListener('click', () => {
+        if (currentRecurringPage > 1) {
+            currentRecurringPage--;
+            loadRecurringTransactions();
         }
     });
 
-    // Function to enable dark mode
-    function enableDarkMode() {
-        body.classList.add('dark-mode');
-        localStorage.setItem('dark-mode', 'enabled'); // Save the preference in localStorage
-    }
+    document.getElementById('next-recurring-page').addEventListener('click', () => {
+        if (currentRecurringPage * recurringTransactionsPerPage < recurringTransactions.length) {
+            currentRecurringPage++;
+            loadRecurringTransactions();
+        }
+    });
 
-    // Function to disable dark mode
-    function disableDarkMode() {
-        body.classList.remove('dark-mode');
-        localStorage.setItem('dark-mode', 'disabled'); // Save the preference in localStorage
-    }
+    // Initial load for recurring transactions
+    loadRecurringTransactions();
 </script>
 
 </body>

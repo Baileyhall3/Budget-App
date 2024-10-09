@@ -1,3 +1,5 @@
+<script src="scripts/modals.js"></script>
+
 <nav class="side-nav" id="side-nav">
     <div class="nav-logo">
         <h2 style="margin-top: 5px; margin-bottom: 5px;">
@@ -10,7 +12,7 @@
 
     <div class="profile-dropdown-container">
         <div class="dropdown">
-            <button class="profile-btn">
+            <button class="profile-btn" id="profile-btn">
                 <i class="fa fa-user"></i>
                 <span>Bailey Hall</span>
             </button>
@@ -20,53 +22,37 @@
             </div>
         </div>
     </div>
-    
+
     <ul class="nav-menu">
         <li><a id="home-link" href="index.html" class="link"><i class="fa fa-home"></i> Dashboard</a></li>
         <li><a id="savings-link" href="savings.html" class="link"><i class="fa fa-bank"></i> Savings</a></li>
         <li><a id="accounts-link" href="accounts.html" class="link"><i class="fa fa-credit-card"></i> Accounts</a></li>
         <li><a id="reports-link" href="reports.html" class="link"><i class="fa fa-bar-chart"></i> Reports</a></li>
+        <li><a id="transactions-link" href="transactions.html" class="link"><i class="fa fa-exchange"></i> Transactions</a></li>
         <li><a id="settings-link" href="settings.html" class="link"><i class="fa fa-cog"></i> Settings</a></li>
     </ul>
 </nav>
 
 <!-- Right-aligned icon buttons -->
 <div class="icon-buttons">
-    <!-- Plus Button -->
     <div class="dropdown">
         <button class="icon-btn" id="add-btn">
             <i class="fa fa-plus"></i> <!-- Plus Icon -->
         </button>
         <div class="dropdown-content" id="add-dropdown">
-            <a href="#" id="addAccount">Add Account</a>
-            <a href="#">New Budget</a>
+            <a href="#">Add Account</a>
             <a href="#">New Pot</a>
+            <a href="#">New Budget</a>
+            <a href="#">Log Transaction</a>
         </div>
     </div>
 
-    <!-- Alerts Button -->
     <div class="dropdown">
         <button class="icon-btn" id="alerts-btn">
-            <i class="fa fa-bell"></i> 
+            <i class="fa fa-bell"></i>
         </button>
         <div class="dropdown-content alerts-dropdown" id="alerts-dropdown">
-            <div class="alert-item">
-                <h5>Payment Due</h5>
-                <p>Your payment is due in 3 days.</p>
-                <span class="alert-date">02/10/2024</span>
-            </div>
-            <hr>
-            <div class="alert-item">
-                <h5>Low Balance</h5>
-                <p>Your account balance is below £50.</p>
-                <span class="alert-date">01/10/2024</span>
-            </div>
-            <hr>
-            <div class="alert-item">
-                <h5>New Transaction</h5>
-                <p>You spent £20 at Pizza Place.</p>
-                <span class="alert-date">30/09/2024</span>
-            </div>
+            <!-- Alert items here -->
         </div>
     </div>
 </div>
@@ -188,34 +174,3 @@
 </style>
 
 <script src="scripts/shared.js"></script>
-<script>
-    // Collapse navigation functionality
-    document.getElementById('collapse-btn').addEventListener('click', function() {
-        const sideNav = document.getElementById('side-nav');
-        sideNav.classList.toggle('collapsed');
-    });
-
-    // Profile dropdown toggle
-    document.getElementById('profile-btn').addEventListener('click', function () {
-        toggleDropdown('profile-dropdown');
-    });
-
-    // Alerts dropdown toggle
-    document.getElementById('alerts-btn').addEventListener('click', function () {
-        toggleDropdown('alerts-dropdown');
-    });
-
-    // Add dropdown toggle
-    document.getElementById('add-btn').addEventListener('click', function () {
-        toggleDropdown('add-dropdown');
-    });
-
-    // Close the dropdown if clicked outside
-    window.onclick = function(event) {
-        if (!event.target.matches('.icon-btn')) {
-            document.querySelectorAll('.dropdown-content').forEach(function (dropdown) {
-                dropdown.style.display = 'none';
-            });
-        }
-    }
-</script>

@@ -30,19 +30,6 @@
             margin-bottom: 30px;
         }
 
-        .transaction-section {
-            background-color: #f4f4f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: column; 
-            width: 30%; 
-            margin-right: 40px;
-            margin-left: 40px;
-        }
-
         /* Flexbox container for form fields */
         .input-row {
             display: flex;
@@ -94,48 +81,6 @@
         .input-col input:focus {
             outline: none;
             border-color: rgb(69, 160, 73);;
-        }
-
-        /* Transaction list item styling */
-        .transaction {
-            padding: 10px 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .transaction-header {
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-        }
-
-        .transaction-sub {
-            display: flex;
-            justify-content: space-between;
-            color: gray;
-            font-size: 14px;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .pagination button {
-            padding: 10px 15px;
-            border-radius: 30px;
-            border: 1px solid #36A2EB;
-            background-color: #36A2EB;
-            color: white;
-            margin: 0 10px;
-            cursor: pointer;
-        }
-
-        .pagination button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
         }
 
         /* Charts */
@@ -233,11 +178,9 @@
                 <div class="chart-container">
                     <h3 id="title-display">Savings Goal - £1500 / £2000</h3>
                     <div id="money-bar">
-                        <!-- Green section (spent) -->
                         <div class="money-pot green" style="width: 75%;">
                             <div class="actual-value">75%</div>
                         </div>
-                        <!-- Red section (remaining) -->
                         <div class="money-pot remaining" style="width: 25%;">
                             <div class="actual-value">25%</div>
                         </div>

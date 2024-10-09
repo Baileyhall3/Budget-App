@@ -18,22 +18,6 @@ p {
     color: rgb(131 131 131);
 }
 
-.wrapper {
-    display: flex;
-    justify-content: center;
-    min-height: calc(100vh - 60px); 
-    background: rgba(0, 255, 42, 0.4);
-    padding-bottom: 25px;
-    margin-top: 80px;
-}
-
-.home_body {
-    display: flex;
-    flex-wrap: wrap;
-    overflow: hidden;
-}
-
-/* General styles */
 .nav-title {
     font-weight: 100;
     font-family: 'Brush Script MT', cursive; 
@@ -49,7 +33,6 @@ p {
     top: 0;
     height: 100%;
     width: 250px; /* Sidebar width */
-    background: transparent; /* No background color */
     background-color: #f4f4f9;
     padding: 10px;
     transition: width 0.3s ease; /* Smooth collapse/expand */
@@ -148,13 +131,6 @@ p {
     border-radius: 15px; /* Ensure the rounded effect on hover */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Shadow on hover */
     transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
-}
-
-.hamburger {
-    display: none;
-    cursor: pointer;
-    font-size: 30px;
-    color: #c27fff;
 }
 
 .dropdown {
@@ -271,8 +247,17 @@ p {
     margin-left: 2px;
 }
 
+/* Global colours */
 .remaining {
     background-color: #A9A9A9;
+}
+
+.expense {
+    color: rgb(131, 131, 131);
+}
+
+.income {
+    color: #45a049;
 }
 
 .delete-btn {
@@ -348,7 +333,7 @@ li {
     justify-content: space-between; 
     display: flex; 
     align-items: center; 
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
 }
 
 /* Styling for the dropdown container */
@@ -422,6 +407,15 @@ li {
     background-color: rgb(200, 200, 200);
 }
 
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+    margin-top: 70px;
+    gap: 20px;
+    transition: margin-left 0.3s ease;
+}
+
 .chart-container {
     background-color: #f4f4f9;
     padding: 20px;
@@ -445,4 +439,165 @@ li {
     justify-content: space-between;
     width: 100%;
     gap: 40px;
+}
+
+.transaction-section {
+    background-color: #f4f4f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column; 
+    width: 30%; 
+    margin-right: 40px;
+    margin-left: 40px;
+}
+
+/* Transaction list item styling */
+.transaction {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.transaction-sub {
+    display: flex;
+    justify-content: space-between;
+    color: gray;
+    font-size: 14px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    border-radius: 30px;
+    border: 1px solid #36A2EB;
+    background-color: #36A2EB;
+    color: white;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.marker-container {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+/* Thin vertical line for "today" */
+.today-marker {
+    position: absolute;
+    width: 1px;
+    background-color: black;
+    height: 60px;
+    top: -10px; /* Extending above and below the bar */
+}
+
+.today-label {
+    position: absolute;
+    color: black;
+    font-size: 12px;
+    top: -20px;
+    transform: translateX(-50%); /* Center the label over the line */
+}
+
+.charts {
+    width: 80%;
+}
+
+.chart1 {
+    width: 100% !important;
+    height: 100% !important; /* Set height for the canvas */
+    max-height: 400px;
+}
+
+.transaction-name {
+    font-size: 18px; 
+    margin: 0; 
+}
+
+.transaction-amount {
+    font-size: 20px; 
+    margin: 0;
+}
+
+.transaction-category {
+    font-size: 16px; 
+    margin: 0; 
+    font-weight: 100;
+}
+
+.transaction-time {
+    font-size: 14px; 
+    margin: 0;
+}
+
+.account-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Mobile-specific Styles */
+@media (max-width: 768px) {
+    .side-nav.collapsed {
+        background-color: transparent;
+    }
+
+    .content-wrapper {
+        margin-left: 0px;
+        width: 100%;
+    }
+
+    .charts {
+        width: 100%;
+    }
+
+    .account-container {
+        display: block;
+    }
+
+    .account-details {
+        width: 100%;
+    }
+
+    .account-chart-container {
+        width: 100%;
+        height: 500px; /* Set height for the container */
+    }
+
+    canvas{
+        height: 400px;
+    }
+
+    .account-title {
+        font-size: 18px;
+    }
+
+    .transaction-name {
+        font-size: 14px;
+    }
+
+    .transaction-amount {
+        font-size: 16px; 
+    }
 }

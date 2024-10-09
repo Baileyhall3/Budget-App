@@ -1,68 +1,89 @@
+// Generic function to open a modal by ID
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = "block";
+    }
+}
+
+// Generic function to close a modal by ID
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-    // New Account Modal
-    const newAccountModal = document.getElementById("newAccountModal");
-    const addAccountLink = document.getElementById("addAccount");
-
-    // New Pot Modal
-    const newPotModal = document.getElementById("newPotModal");
-    const addPotLink = document.getElementById("addPot");
-
-    // New Budget Modal
-    const newBudgetModal = document.getElementById("newBudgetModal");
-    const addBudgetLink = document.getElementById("addBudget");
-
-    // Handle the add account button click
-    if (addAccountLink) {
-        addAccountLink.onclick = function (event) {
-            event.preventDefault();
-            newAccountModal.style.display = "block";
-        };
+    // Function to dynamically load HTML for modals
+    function loadModals() {
+        fetch('modals.html')
+            .then(response => response.text())
+            .then(html => {
+                document.body.insertAdjacentHTML('beforeend', html);
+                attachCloseEvents(); // Attach close events after loading HTML
+                initializeRecurringTransactionHandling(); // Initialize recurring transaction handling
+            })
+            .catch(err => console.log('Error loading modals:', err));
     }
 
-    // Handle the add pot button click
-    if (addPotLink) {
-        addPotLink.onclick = function (event) {
-            event.preventDefault();
-            newPotModal.style.display = "block";
-        };
-    }
-
-    // Handle the add pot button click
-    if (addBudgetLink) {
-        addBudgetLink.onclick = function (event) {
-            event.preventDefault();
-            newBudgetModal.style.display = "block";
-        };
-    }
-
-    // Handle account type change
-    const accountType = document.getElementById("accountType");
-    const joiningPartner = document.getElementById("joiningPartner");
-    if (accountType) {
-        accountType.addEventListener("change", function () {
-            if (accountType.value === "joint") {
-                joiningPartner.disabled = false;
-            } else {
-                joiningPartner.disabled = true;
-                joiningPartner.value = ""; // Clear the input if disabled
-            }
+    // Attach event listeners for closing modals
+    function attachCloseEvents() {
+        // Close modals when clicking the close button
+        const closeButtons = document.querySelectorAll(".close");
+        closeButtons.forEach(function (closeBtn) {
+            closeBtn.onclick = function () {
+                closeModal(closeBtn.closest(".modal").id);
+            };
         });
+
+        // Close modal when clicking outside of any modal
+        window.onclick = function (event) {
+            if (event.target.classList.contains("modal")) {
+                event.target.style.display = "none";
+            }
+        };
     }
 
-    // Close modals when clicking the close button or clicking outside
-    const closeButtons = document.querySelectorAll(".close");
+    // Function to initialize the recurring transaction form handling
+    function initializeRecurringTransactionHandling() {
+        // Grab the elements after the modal HTML is fully loaded
+        const recurringIntervalSelect = document.getElementById('recurringInterval');
+        const transactionDateInput = document.getElementById('transactionDate');
+        const weeklySelect = document.getElementById('weeklySelect');
+        const monthlySelect = document.getElementById('monthlySelect');
 
-    // Loop through close buttons to attach close functionality to each modal
-    closeButtons.forEach(function (closeBtn) {
-        closeBtn.onclick = function () {
-            closeBtn.closest(".modal").style.display = "none";
-        };
-    });
+        // Check if the elements exist to avoid errors
+        if (recurringIntervalSelect && transactionDateInput && weeklySelect && monthlySelect) {
+            // Function to update the date input and select options based on interval selection
+            function updateDateInput() {
+                const selectedInterval = recurringIntervalSelect.value;
 
-    // Close modal when clicking outside of any modal
-    window.onclick = function (event) {
-        if (event.target.classList.contains("modal")) {
-            event.target.style.display = "none";
+                // Reset the date input and hide all select options
+                transactionDateInput.disabled = true;
+                transactionDateInput.value = '';
+                weeklySelect.style.display = 'none';
+                monthlySelect.style.display = 'none';
+
+                if (selectedInterval === 'daily') {
+                    // Disable date input for daily
+                    transactionDateInput.disabled = true;
+                } else if (selectedInterval === 'weekly' || selectedInterval === 'biweekly') {
+                    // Show weekly select and disable date input
+                    weeklySelect.style.display = 'block';
+                } else if (selectedInterval === 'monthly') {
+                    // Show monthly select and disable date input
+                    monthlySelect.style.display = 'block';
+                }
+            }
+
+            // Add event listener for interval selection
+            recurringIntervalSelect.addEventListener('change', updateDateInput);
+        } else {
+            console.log('Recurring transaction elements not found');
         }
-    };
+    }
+
+    // Load the modals and set up the close functionality
+    loadModals();
 });
