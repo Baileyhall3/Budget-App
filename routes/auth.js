@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-const { User } = require('../models'); // Adjust this path based on your project structure
+const { User } = require('../models');
 
 // Register route
 router.post('/register', async (req, res) => {
@@ -44,13 +44,15 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        // Generate a token
-        const token = jwt.sign({ id: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
+        // Generate a token and include the user's name
+        const token = jwt.sign({ id: user.id, name: user.name }, 'your_jwt_secret', { expiresIn: '7d' });
 
-        res.status(200).json({ token });
+        // Send the token and the user name
+        res.status(200).json({ token, name: user.name });
     } catch (error) {
         res.status(500).json({ message: 'Error logging in', error });
     }
 });
+
 
 module.exports = router;

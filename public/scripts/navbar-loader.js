@@ -64,6 +64,33 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
             }
+
+            const userName = localStorage.getItem('userName');
+
+            if (userName) {
+                // Update the name in the navbar if the user is logged in
+                document.getElementById('user-name').textContent = userName;
+            }
+
+            // Log out functionality
+            document.getElementById('logout').addEventListener('click', () => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('userName');
+                window.location.href = '/login.html'; // Redirect to login page after logout
+            });
+
+            window.addEventListener('load', () => {
+                const token = localStorage.getItem('token');
+                const userName = localStorage.getItem('userName');
+            
+                if (!token || !userName) {
+                    // If there's no token, redirect to login
+                    window.location.href = 'login.html';
+                } else {
+                    // If user is logged in, display their name
+                    document.getElementById('user-name').textContent = userName;
+                }
+            });
         })
         .catch(error => console.error('Error loading navbar:', error));
 });

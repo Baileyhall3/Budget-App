@@ -28,7 +28,9 @@
         
             <!-- Joining Partner Field (Disabled unless 'Joint' is selected) -->
             <label for="joiningPartner">Joining Partner:</label>
-            <input type="text" id="joiningPartner" name="joiningPartner" disabled>
+            <select id="joiningPartner" name="joiningPartner" disabled>
+                <option value="">Select a joining partner</option>
+            </select>
         
             <label for="defaultAccount">
                 <input type="checkbox" id="defaultAccount" name="defaultAccount">
@@ -70,7 +72,7 @@
     </div>
 </div>
 
-<!--New Account Modal-->
+<!--New Budget Modal-->
 <div id="newBudgetModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
