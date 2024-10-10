@@ -79,18 +79,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.location.href = '/login.html'; // Redirect to login page after logout
             });
 
-            window.addEventListener('load', () => {
-                const token = localStorage.getItem('token');
-                const userName = localStorage.getItem('userName');
+            // window.addEventListener('load', () => {
+            //     const token = localStorage.getItem('token');
+            //     const userName = localStorage.getItem('userName');
             
-                if (!token || !userName) {
-                    // If there's no token, redirect to login
-                    window.location.href = 'login.html';
-                } else {
-                    // If user is logged in, display their name
-                    document.getElementById('user-name').textContent = userName;
-                }
-            });
+            //     if (!token || !userName) {
+            //         // If there's no token, redirect to login
+            //         window.location.href = 'login.html';
+            //     } else {
+            //         // If user is logged in, display their name
+            //         document.getElementById('user-name').textContent = userName;
+            //     }
+            // });
         })
         .catch(error => console.error('Error loading navbar:', error));
 });

@@ -7,7 +7,6 @@
     <title>Savings</title>
     <link rel="stylesheet" href="styling.css">
     <link rel="icon" type="image/x-icon" href="images/money-bag.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="scripts/navbar-loader.js" defer></script>
     <script src="scripts/modals.js"></script>
     <style>
@@ -27,7 +26,6 @@
             align-items: center;
             width: 80%; /* Make the wrapper wider */
             margin: 0 auto; /* Center the wrapper */
-            margin-left: 250px;
             transition: margin-left 0.3s ease;
         }
 
@@ -97,7 +95,7 @@
 
         <div style="max-width: 1360px;">
             <div style="margin-bottom: 30px; align-self: self-start;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="container-header">
                     <h2>My Pots</h2>
                     <h3><a id="addPot" onclick="openModal('newPotModal')" class="link" href="#">Add New</a></h3>
                 </div>
@@ -131,7 +129,7 @@
             </div>
             
             <div style="margin-bottom: 30px; align-self: self-start;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="container-header">
                     <h2>My Budgets</h2>
                     <h3><a id="addBudget" onclick="openModal('newBudgetModal')" class="link" href="#">Add New</a></h3>
                 </div>

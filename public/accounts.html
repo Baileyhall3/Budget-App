@@ -7,7 +7,6 @@
     <title>Accounts</title>
     <link rel="stylesheet" href="styling.css">
     <link rel="icon" type="image/x-icon" href="images/money-bag.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
     <script src="scripts/navbar-loader.js" defer></script>
     <script src="scripts/modals.js"></script>
@@ -79,7 +78,7 @@
 
     <div class="content-wrapper">
         <div style="width: 80%; margin-top: 40px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="container-header">
                 <h2>My Accounts</h2>
                 <h3><a class="link" onclick="openModal('newAccountModal')" href="#" id="addAccount">Add New</a></h3>
             </div>
@@ -284,7 +283,7 @@
                 });
             } catch (error) {
                 console.error('Error fetching accounts:', error);
-                alert('Failed to load accounts');
+                //alert('Failed to load accounts');
             }
         });
 

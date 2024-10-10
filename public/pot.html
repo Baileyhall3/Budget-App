@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styling.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
     <link rel="icon" type="image/x-icon" href="images/money-bag.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     <script src="scripts/navbar-loader.js" defer></script>
     <script src="scripts/shared.js" defer></script>
 
@@ -28,59 +28,6 @@
 
         .account-summary {
             margin-bottom: 30px;
-        }
-
-        /* Flexbox container for form fields */
-        .input-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        /* Individual input fields or selects */
-        .input-col {
-            width: 100%;
-            position: relative;
-        }
-
-        .transaction-search input, 
-        .transaction-filter select, 
-        .transaction-sort select, 
-        .input-col input {
-            width: 100%;
-            padding: 10px 15px;
-            padding-left: 40px; /* Space for icons */
-            border-radius: 30px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        /* Position icons to the left inside input fields */
-        .transaction-search .fa-search, 
-        .transaction-filter .fa-filter, 
-        .transaction-sort .fa-sort, 
-        .input-col .fa-calendar {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #aaa;
-        }
-
-        /* Placeholder styling */
-        .transaction-search input::placeholder {
-            color: #aaa;
-        }
-
-        /* Input field focus outline */
-        .transaction-search input:focus, 
-        .transaction-filter select:focus, 
-        .transaction-sort select:focus, 
-        .input-col input:focus {
-            outline: none;
-            border-color: rgb(69, 160, 73);;
         }
 
         /* Charts */
@@ -104,7 +51,7 @@
         }
 
         /* General date input styling fix */
-        .transaction-search,
+        .search,
         .date-filter {
             margin-bottom: 20px;
             position: relative;
@@ -208,7 +155,7 @@
             <h3>Pot Activity</h3>
             
             <!-- Search by Transaction Name -->
-            <div class="transaction-search input-row">
+            <div class="search input-row">
                 <i class="fa fa-search"></i>
                 <input type="text" id="search-transaction" placeholder="Search transactions...">
             </div>

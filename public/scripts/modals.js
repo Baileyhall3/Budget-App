@@ -15,6 +15,54 @@ function closeModal(modalId) {
     }
 }
 
+const userList = [
+    { name: "Lottie", added: "true" },
+    { name: "Jayden", added: "true" },
+    { name: "Craig", added: "true" },
+    { name: "Liam", added: "true" },
+    { name: "James", added: "true" },
+    { name: "Lewis", added: "false" },
+    { name: "Cain", added: "false" },
+    { name: "Jake", added: "false" },
+    { name: "Jacob", added: "false" },
+];
+
+
+// Function to display the list of users
+function displayUsers(users) {
+    const usersListContainer = document.getElementById('users-list');
+    usersListContainer.innerHTML = ''; // Clear previous list
+
+    users.forEach(user => {
+        // Create a wrapper div for each user
+        const userDiv = document.createElement('div');
+        userDiv.classList.add('friend-row');
+        userDiv.style = 'padding: 10px 0;'
+
+        // Create the icon for the user
+        const icon = document.createElement('i');
+        icon.classList.add('fa', 'fa-user', 'friend-icon');
+
+        // Create the user name element
+        const userName = document.createElement('span');
+        userName.classList.add('friend-name');
+        userName.textContent = user.name;
+
+        // Create the action icon (check-square or plus-square)
+        const actionIcon = document.createElement('i');
+        actionIcon.classList.add('fa', user.added === "true" ? 'fa-check-square-o' : 'fa-plus-square-o', 'user-action-icon');
+        actionIcon.style = 'font-size: 24px;'
+
+        // Append the icon, name, and action icon to the user row
+        userDiv.appendChild(icon);
+        userDiv.appendChild(userName);
+        userDiv.appendChild(actionIcon);
+
+        // Append the user row to the container
+        usersListContainer.appendChild(userDiv);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     // Function to dynamically load HTML for modals
     function loadModals() {
@@ -25,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 attachCloseEvents(); // Attach close events after loading HTML
                 initializeRecurringTransactionHandling(); // Initialize recurring transaction handling
                 attachAccountFormEvents();
+                displayUsers(userList);
             })
             .catch(err => console.log('Error loading modals:', err));
     }
@@ -208,4 +257,14 @@ function attachAccountFormEvents() {
             console.error('Error fetching users:', error);
         }
     }    
+}
+
+// Function to filter the users based on search input
+function filterUsers() {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredUsers = userList.filter(user => user.name.toLowerCase().includes(searchTerm));
+        displayUsers(filteredUsers);
+    }
 }

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playball&family=Playwrite+IS:wght@100..400&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -20,7 +22,7 @@ p {
 
 .nav-title {
     font-weight: 100;
-    font-family: 'Brush Script MT', cursive; 
+    font-family: "Playball", cursive;
     font-size: 36px;
     color: black; /* Updated to remove white color */
     text-decoration: none;
@@ -563,6 +565,219 @@ li {
     font-size: 24px;
     margin-bottom: 20px;
 }
+
+.login {
+    background-color: #f4f4f9;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px; /* Fixed width for the container */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: -10px; /* Position error message closer to input */
+    margin-bottom: 10px; /* Space below error message */
+}
+
+.container-header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+/* Flexbox container for form fields */
+.input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Individual input fields or selects */
+.input-col {
+    width: 100%;
+    position: relative;
+}
+
+.search input, 
+.transaction-filter select, 
+.transaction-sort select, 
+.input-col input {
+    width: 100%;
+    padding: 10px 15px;
+    padding-left: 40px; /* Space for icons */
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Position icons to the left inside input fields */
+.search .fa-search, 
+.transaction-filter .fa-filter, 
+.transaction-sort .fa-sort, 
+.input-col .fa-calendar {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+/* Placeholder styling */
+.search input::placeholder {
+    color: #aaa;
+}
+
+/* Input field focus outline */
+.search input:focus, 
+.transaction-filter select:focus, 
+.transaction-sort select:focus, 
+.input-col input:focus {
+    outline: none;
+    border-color: rgb(69, 160, 73);;
+}
+
+.search,
+.date-filter {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* For date range inputs */
+.date-filter input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    padding-left: 40px; /* Space for calendar icons */
+    box-sizing: border-box;
+}
+
+.date-filter .fa-calendar {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.date-filter .input-col {
+    position: relative;
+    width: 48%; /* Split in half to fit both inputs side-by-side */
+}
+
+/* Input row for date filters */
+.date-filter .input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.date-filter input:focus {
+    border-color: rgb(69, 160, 73);;
+}
+
+
+/* login / register forms */
+.login h2 {
+    margin-bottom: 30px; 
+    font-size: 28px; 
+}
+
+.login form {
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+}
+
+.login input {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 30px; 
+    font-size: 16px;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.login button {
+    padding: 15px;
+    background-color: #45a049;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.login button:hover {
+    background-color: #39963d;
+}
+
+.login a {
+    font-size: 14px;
+    color: #007BFF;
+    text-decoration: none;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.login p {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.login a:hover {
+    text-decoration: underline;
+}
+
+/* Friends list */
+.friends {
+    width: 800px;
+    margin-top: 40px;
+}
+
+.friends-list {
+    margin-top: 20px;
+}
+
+.friend-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-top: 1px solid rgb(131 131 131);
+}
+
+.friend-icon {
+    margin-right: 10px;
+    font-size: 24px;
+    border-radius: 50%;
+    background-color: #fff;
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.friend-name {
+    font-size: 18px;
+    flex-grow: 1;
+    margin-left: 10px;
+    font-weight: 100;
+}
+
 
 /* Mobile-specific Styles */
 @media (max-width: 768px) {
