@@ -48,6 +48,8 @@
   }
   
   form input[type="text"],
+  input[type="date"],
+  input[type="number"],
   form select {
     width: 100%; /* Full width for form inputs */
     padding: 10px;
@@ -58,7 +60,7 @@
   }
   
   /* Checkbox styling */
-  form label[for="defaultAccount"] {
+  form label[type="checkbox"] {
     display: flex;
     align-items: center;
     margin-top: 15px;
@@ -80,4 +82,16 @@
   
   .btn:hover {
     background-color: #368a3d;
+  }
+
+  .modal-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .modal-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
   }

@@ -9,21 +9,13 @@
     <link rel="icon" type="image/x-icon" href="images/money-bag.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="scripts/navbar-loader.js" defer></script>
-    <script src="scripts/shared.js" defer></script>
+    <script src="scripts/shared.js"></script>
+    <script src="scripts/modals.js"></script>
 
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-        }
-
-        .flex-container {
-            display: flex;
-            justify-content: space-between;
-            width: calc(100% - 40px);
-            margin-top: 70px;
-            gap: 20px;
-            transition: margin-left 0.3s ease;
         }
 
         .content-wrapper {
@@ -37,19 +29,6 @@
 
         .account-summary {
             margin-bottom: 30px;
-        }
-
-        .transaction-section {
-            background-color: #f4f4f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: column; 
-            width: 30%; 
-            margin-right: 40px;
-            margin-left: 40px;
         }
 
         /* Flexbox container for form fields */
@@ -103,48 +82,6 @@
         .input-col input:focus {
             outline: none;
             border-color: rgb(69, 160, 73);;
-        }
-
-        /* Transaction list item styling */
-        .transaction {
-            padding: 10px 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .transaction-header {
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-        }
-
-        .transaction-sub {
-            display: flex;
-            justify-content: space-between;
-            color: gray;
-            font-size: 14px;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .pagination button {
-            padding: 10px 15px;
-            border-radius: 30px;
-            border: 1px solid #36A2EB;
-            background-color: #36A2EB;
-            color: white;
-            margin: 0 10px;
-            cursor: pointer;
-        }
-
-        .pagination button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
         }
 
         /* Pie chart container (40% width) */
@@ -215,23 +152,6 @@
             border-color: rgb(69, 160, 73);;
         }
 
-        /* Thin vertical line for "today" */
-        .today-marker {
-            position: absolute;
-            width: 1px;
-            background-color: black;
-            height: 60px;
-            top: -10px; /* Extending above and below the bar */
-        }
-
-        .today-label {
-            position: absolute;
-            color: black;
-            font-size: 12px;
-            top: -20px;
-            transform: translateX(-50%); /* Center the label over the line */
-        }
-
         #budget-period {
             font-weight: normal; /* Remove bold */
         }
@@ -240,21 +160,12 @@
             font-weight: normal; /* Non-bold span for dates */
         }
 
-        .marker-container {
-            position: absolute;
-            top: 80px;
-            left: 0;
-            width: 100%;
-            pointer-events: none;
-        }
-
     </style>
 </head>
 <body>
     <div id="navbar-placeholder"></div>
     
     <div class="flex-container">
-
         <div class="content-wrapper" style="align-self: start;">
             <div style="display: flex; justify-content: space-between; align-items: center; width: 80%;">
                 <h2>Budget 1 - Detailed View</h2>
@@ -262,7 +173,8 @@
                 <div class="dropdown">
                     <h3><a class="link" id="pot-actions-btn" href="#">Budget Actions</a></h3>
                     <div class="dropdown-content" id="pot-actions-dropdown">
-                        <a href="#">Log Transaction</a>
+                        <a onclick="openModal('logTransactionModal')" href="#">Log Transaction</a>
+                        <a onclick="openModal('recurringTransactionModal')" href="#">Add Recurring Transaction</a>
                         <a href="#">Budget Details</a>
                         <a href="#">Delete Budget</a>
                     </div>
@@ -272,11 +184,9 @@
                 <div class="chart-container">
                     <h3 id="title-display">Budget Used - £1500 / £2000</h3>
                     <div id="money-bar">
-                        <!-- Green section (spent) -->
                         <div class="money-pot green" style="width: 75%;">
                             <div class="actual-value">75%</div>
                         </div>
-                        <!-- Red section (remaining) -->
                         <div class="money-pot remaining" style="width: 25%;">
                             <div class="actual-value">25%</div>
                         </div>
@@ -304,8 +214,6 @@
                         <canvas id="spendingBarChart" height="200"></canvas>
                     </div>
                 </div>            
-    
-                
             </div>
         </div>
 
@@ -549,24 +457,6 @@
                 tension: 0.1
             }]
         };
-
-        // Set the start and end dates of the budget period
-        const startDate = new Date('2024-09-15');
-        const endDate = new Date('2024-10-15');
-        const today = new Date();
-
-        // Calculate the total number of days in the budget period
-        const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24);
-
-        // Calculate the number of days from the start date to today
-        const daysSinceStart = (today - startDate) / (1000 * 60 * 60 * 24);
-
-        // Calculate the percentage of the period passed
-        const percentageThroughPeriod = (daysSinceStart / totalDays) * 100;
-
-        // Get the today-marker element and set its position
-        const todayMarker = document.getElementById('today-marker');
-        todayMarker.style.left = `${percentageThroughPeriod}%`;
 
     </script>
 </body>

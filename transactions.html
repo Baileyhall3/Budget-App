@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions</title>
+    <link rel="stylesheet" href="styling.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="images/money-bag.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="scripts/navbar-loader.js" defer></script>
+    <script src="scripts/shared.js" defer></script>
+    <script src="scripts/modals.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        /* Flexbox container for form fields */
+        .input-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Individual input fields or selects */
+        .input-col {
+            width: 100%;
+            position: relative;
+        }
+
+        .transaction-search input, 
+        .transaction-filter select, 
+        .transaction-sort select, 
+        .input-col input {
+            width: 100%;
+            padding: 10px 15px;
+            padding-left: 40px; /* Space for icons */
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        /* Position icons to the left inside input fields */
+        .transaction-search .fa-search, 
+        .transaction-filter .fa-filter, 
+        .transaction-sort .fa-sort, 
+        .input-col .fa-calendar {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        /* Placeholder styling */
+        .transaction-search input::placeholder {
+            color: #aaa;
+        }
+
+        /* Input field focus outline */
+        .transaction-search input:focus, 
+        .transaction-filter select:focus, 
+        .transaction-sort select:focus, 
+        .input-col input:focus {
+            outline: none;
+            border-color: rgb(69, 160, 73);;
+        }
+
+        /* General date input styling fix */
+        .transaction-search,
+        .date-filter {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        /* For date range inputs */
+        .date-filter input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            padding-left: 40px; /* Space for calendar icons */
+            box-sizing: border-box;
+        }
+
+        .date-filter .fa-calendar {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        .date-filter .input-col {
+            position: relative;
+            width: 48%; /* Split in half to fit both inputs side-by-side */
+        }
+
+        /* Input row for date filters */
+        .date-filter .input-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        /* Specific focus for date filter input */
+        .date-filter input:focus {
+            border-color: rgb(69, 160, 73);;
+        }
+
+        /* Style for collapsible sections */
+        .collapsible {
+            background-color: #f4f4f9;
+            color: black;
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible.active, .collapsible:hover {
+            background-color: #ddd;
+        }
+
+        .collapsible i {
+            font-size: 20px;
+            margin-left: auto;
+        }
+
+        /* Inner sub-sections (for Accounts) */
+        .sub-collapsible {
+            background-color: #eaeaea;
+            font-size: 16px;
+            padding: 8px;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        .sub-collapsible i {
+            font-size: 16px;
+            margin-left: auto;
+        }
+
+        .flex-container {
+            display: flex; /* Enables flexbox */
+            align-items: stretch; /* Ensure children stretch to fill the container */
+            justify-content: center;
+        }
+
+        /* Ensure the content within collapsible sections expands without squashing */
+        .content {
+            padding: 10px; /* Add some padding for better spacing */
+            display: none; /* Start hidden */
+            overflow: visible; /* Allow content to expand */
+        }
+
+        /* Additional styles for sub-content */
+        .sub-content {
+            padding-left: 20px; /* Indent sub-content for visual hierarchy */
+            margin-top: 10px; /* Space between sub-sections */
+            display: none;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    
+    <div class="flex-container">
+        <div class="transaction-section" style="overflow-y: auto;">
+            <h3>All Transactions</h3>
+
+            <!-- Search and filters -->
+            <div class="transaction-search input-row">
+                <i class="fa fa-search"></i>
+                <input type="text" id="search-transaction" placeholder="Search transactions...">
+            </div>
+
+            <div class="input-row">
+                <div class="transaction-filter input-col">
+                    <i class="fa fa-filter"></i>
+                    <select id="filter-category">
+                        <option value="all">All Categories</option>
+                        <option value="food">Food & Dining</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="bills">Bills & Utilities</option>
+                    </select>
+                </div>
+
+                <div class="transaction-sort input-col">
+                    <i class="fa fa-sort"></i>
+                    <select id="sort-transaction">
+                        <option value="date">Date</option>
+                        <option value="amount">Amount</option>
+                        <option value="name">Name</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-row">
+                <div class="input-col">
+                    <input type="date" id="start-date">
+                </div>
+                <div class="input-col">
+                    <input type="date" id="end-date">
+                </div>
+            </div>
+
+            <!-- Recurrent Transactions -->
+            <button class="collapsible">Recurrent Transactions <i class="fa fa-chevron-down"></i></button>
+            <div class="content">
+                <div id="recurrent-transactions-list" class="transaction-list"></div>
+            </div>
+
+            <!-- Accounts -->
+            <button class="collapsible">Accounts <i class="fa fa-chevron-down"></i></button>
+            <div class="sub-content">
+                <button class="collapsible">Barclays <i class="fa fa-chevron-down"></i></button>
+                <div class="content">
+                    <div id="barclays-transactions-list" class="transaction-list"></div>
+                </div>
+
+                <button class="collapsible">Monzo <i class="fa fa-chevron-down"></i></button>
+                <div class="content">
+                    <div id="monzo-transactions-list" class="transaction-list"></div>
+                </div>
+
+                <button class="collapsible">Joint Account <i class="fa fa-chevron-down"></i></button>
+                <div class="content">
+                    <div id="joint-transactions-list" class="transaction-list"></div>
+                </div>
+            </div>
+
+            <!-- Budgets -->
+            <button class="collapsible">Budgets <i class="fa fa-chevron-down"></i></button>
+            <div class="content">
+                <div id="budgets-transactions-list" class="transaction-list"></div>
+            </div>
+
+            <!-- Pots -->
+            <button class="collapsible">Pots <i class="fa fa-chevron-down"></i></button>
+            <div class="content">
+                <div id="pots-transactions-list" class="transaction-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dummy data for transactions
+        const transactions = [
+            { name: 'Greggs', amount: -3.40, category: 'food', type: 'expense', description: 'Food', time: '4 hours ago', account: 'Barclays', isRecurrent: false },
+            { name: 'Spotify', amount: -9.99, category: 'entertainment', type: 'expense', description: 'Subscription', time: '3 days ago', account: 'Monzo', isRecurrent: true },
+            { name: 'Apple Store', amount: -150.00, category: 'shopping', type: 'expense', description: 'Electronics', time: '2 days ago', account: 'Barclays', isRecurrent: false },
+            { name: 'Water Bill', amount: -30.00, category: 'bills', type: 'expense', description: 'Utilities', time: '5 days ago', account: 'Joint', isRecurrent: true },
+            { name: 'Deposit', amount: 500.00, category: 'income', type: 'income', description: 'Paycheck', time: '7 days ago', account: 'Monzo', isRecurrent: false },
+            { name: 'Netflix', amount: -12.99, category: 'entertainment', type: 'expense', description: 'Subscription', time: '4 days ago', account: 'Monzo', isRecurrent: true },
+            // Add more transactions as needed
+        ];
+    
+        document.addEventListener("DOMContentLoaded", () => {
+            const collapsibles = document.querySelectorAll(".collapsible");
+            collapsibles.forEach(collapsible => {
+                collapsible.addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    const content = this.nextElementSibling;
+                    content.style.display = content.style.display === "block" ? "none" : "block";
+                    const icon = this.querySelector('i');
+                    icon.classList.toggle('fa-chevron-down');
+                    icon.classList.toggle('fa-chevron-up');
+                });
+            });
+    
+            const subCollapsibles = document.querySelectorAll(".sub-collapsible");
+            subCollapsibles.forEach(subCollapsible => {
+                subCollapsible.addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    const subContent = this.nextElementSibling;
+                    subContent.style.display = subContent.style.display === "block" ? "none" : "block";
+                    const icon = this.querySelector('i');
+                    icon.classList.toggle('fa-chevron-down');
+                    icon.classList.toggle('fa-chevron-up');
+                });
+            });
+    
+            // Load all transactions for each section
+            loadTransactionsBySection();
+        });
+    
+        function loadTransactionsBySection() {
+            // Clear previous data
+            document.getElementById('recurrent-transactions-list').innerHTML = '';
+            document.getElementById('barclays-transactions-list').innerHTML = '';
+            document.getElementById('monzo-transactions-list').innerHTML = '';
+            document.getElementById('joint-transactions-list').innerHTML = '';
+            document.getElementById('budgets-transactions-list').innerHTML = '';
+            document.getElementById('pots-transactions-list').innerHTML = '';
+    
+            transactions.forEach(transaction => {
+                const transactionDiv = createTransactionDiv(transaction);
+    
+                // Recurrent Transactions
+                if (transaction.isRecurrent) {
+                    document.getElementById('recurrent-transactions-list').appendChild(transactionDiv);
+                }
+    
+                // Accounts
+                if (transaction.account === 'Barclays') {
+                    document.getElementById('barclays-transactions-list').appendChild(transactionDiv);
+                } else if (transaction.account === 'Monzo') {
+                    document.getElementById('monzo-transactions-list').appendChild(transactionDiv);
+                } else if (transaction.account === 'Joint') {
+                    document.getElementById('joint-transactions-list').appendChild(transactionDiv);
+                }
+    
+                // Budgets (if you have budget-specific logic, filter here)
+                // For simplicity, let's add all income to "Budgets"
+                if (transaction.type === 'income') {
+                    document.getElementById('budgets-transactions-list').appendChild(transactionDiv);
+                }
+    
+                // Pots (similar logic, if you have pots logic, add it here)
+                // For simplicity, let's add all food-related expenses to "Pots"
+                if (transaction.category === 'food') {
+                    document.getElementById('pots-transactions-list').appendChild(transactionDiv);
+                }
+            });
+        }
+    
+        // Helper function to create a transaction element
+        function createTransactionDiv(transaction) {
+            const transactionDiv = document.createElement('div');
+            transactionDiv.classList.add('transaction');
+    
+            const headerDiv = document.createElement('div');
+            headerDiv.classList.add('money-bar-header');
+    
+            const nameElement = document.createElement('h5');
+            nameElement.style.fontSize = '18px';
+            nameElement.style.margin = '0';
+            nameElement.textContent = transaction.name;
+    
+            const amountElement = document.createElement('p');
+            amountElement.style.fontSize = '20px';
+            amountElement.style.margin = '0';
+            amountElement.textContent = (transaction.amount > 0 ? '+ £' : '- £') + Math.abs(transaction.amount).toFixed(2);
+            amountElement.style.color = transaction.amount > 0 ? '#45a049' : '#FF0000';
+    
+            headerDiv.appendChild(nameElement);
+            headerDiv.appendChild(amountElement);
+            transactionDiv.appendChild(headerDiv);
+    
+            const descriptionDiv = document.createElement('div');
+            descriptionDiv.classList.add('money-bar-header');
+    
+            const descriptionElement = document.createElement('h5');
+            descriptionElement.style.fontSize = '16px';
+            descriptionElement.style.margin = '0';
+            descriptionElement.style.color = 'rgb(131, 131, 131)';
+            descriptionElement.style.fontWeight = '100';
+            descriptionElement.textContent = transaction.description;
+    
+            const timeElement = document.createElement('p');
+            timeElement.style.fontSize = '14px';
+            timeElement.style.margin = '0';
+            timeElement.textContent = transaction.time;
+    
+            descriptionDiv.appendChild(descriptionElement);
+            descriptionDiv.appendChild(timeElement);
+            transactionDiv.appendChild(descriptionDiv);
+    
+            return transactionDiv;
+        }
+    
+    </script>
+</body>
+</html>

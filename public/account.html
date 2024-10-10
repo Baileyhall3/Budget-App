@@ -17,30 +17,8 @@
             margin: 20px;
         }
 
-        .flex-container {
-            display: flex;
-            justify-content: space-between;
-            width: calc(100% - 40px);
-            margin-top: 70px;
-            gap: 20px;
-            transition: margin-left 0.3s ease;
-        }
-
         .account-summary {
             margin-bottom: 30px;
-        }
-
-        .transaction-section {
-            background-color: #f4f4f9;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: column; 
-            width: 30%; 
-            margin-right: 40px;
-            margin-left: 40px;
         }
 
         /* Flexbox container for form fields */
@@ -94,48 +72,6 @@
         .input-col input:focus {
             outline: none;
             border-color: rgb(69, 160, 73);;
-        }
-
-        /* Transaction list item styling */
-        .transaction {
-            padding: 10px 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .transaction-header {
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-        }
-
-        .transaction-sub {
-            display: flex;
-            justify-content: space-between;
-            color: gray;
-            font-size: 14px;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .pagination button {
-            padding: 10px 15px;
-            border-radius: 30px;
-            border: 1px solid #36A2EB;
-            background-color: #36A2EB;
-            color: white;
-            margin: 0 10px;
-            cursor: pointer;
-        }
-
-        .pagination button:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
         }
 
         /* Charts */
@@ -233,7 +169,7 @@
                     </div>
                 </div>
             </div>
-            <div style="width: 80%;">
+            <div class="charts">
                 <div class="charts-wrapper">
                     <!-- Pie Chart Container -->
                     <div class="spending-categories-container chart-container">
@@ -288,7 +224,7 @@
                 </div>   
             </div>
 
-            <!-- Filter by Date Range -->
+            <!-- Filter by Date Range (use a slider instead?)-->
             <div class="input-row">
                 <div class="input-col">
                     <i class="fa fa-calendar"></i>

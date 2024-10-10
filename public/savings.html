@@ -4,19 +4,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Dashboard</title>
+    <title>Savings</title>
     <link rel="stylesheet" href="styling.css">
     <link rel="icon" type="image/x-icon" href="images/money-bag.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="scripts/navbar-loader.js" defer></script>
-    <link rel="stylesheet" href="modal-styling.css">
     <script src="scripts/modals.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
         }
 
-        .flex-container {
+        .savings-container {
             display: flex;
             gap: 40px; /* Space between pots */
             width: 100%;
@@ -100,9 +99,9 @@
             <div style="margin-bottom: 30px; align-self: self-start;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h2>My Pots</h2>
-                    <h3><a id="addPot" class="link" href="#">Add New</a></h3>
+                    <h3><a id="addPot" onclick="openModal('newPotModal')" class="link" href="#">Add New</a></h3>
                 </div>
-                <div class="flex-container">
+                <div class="savings-container">
                     <div class="side-container" data-type="pot">
                         <h5 style="font-size: 16px">Pot 1</h5>
                         <h5 style="font-size: 18px; color: #45a049;">£550 out of £600</h5>
@@ -134,9 +133,9 @@
             <div style="margin-bottom: 30px; align-self: self-start;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <h2>My Budgets</h2>
-                    <h3><a id="addBudget" class="link" href="#">Add New</a></h3>
+                    <h3><a id="addBudget" onclick="openModal('newBudgetModal')" class="link" href="#">Add New</a></h3>
                 </div>
-                <div class="flex-container">
+                <div class="savings-container">
                     <div class="side-container" data-type="budget">
                         <h5 style="font-size: 16px">Budget 1</h5>
                         <h5 style="font-size: 18px; color: #45a049;">£550 out of £600</h5>
@@ -159,84 +158,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!--New Pot Modal-->
-    <div id="newPotModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>New Pot</h2>
-            </div>
-            
-            <form id="newAccountForm">
-                <label for="accountName">Account Name:</label>
-                <input type="text" id="accountName" name="accountName" required>
-            
-                <label for="defaultCurrency">Default Currency:</label>
-                <select id="defaultCurrency" name="defaultCurrency" required>
-                    <option value="£">£ - British Pound</option>
-                    <option value="€">€ - Euro</option>
-                </select>
-            
-                <label for="accountType">Account Type:</label>
-                <select id="accountType" name="accountType" required>
-                    <option value="personal">Personal</option>
-                    <option value="savings">Savings</option>
-                    <option value="joint">Joint</option>
-                </select>
-            
-                <!-- Joining Partner Field (Disabled unless 'Joint' is selected) -->
-                <label for="joiningPartner">Joining Partner:</label>
-                <input type="text" id="joiningPartner" name="joiningPartner" disabled>
-            
-                <label for="defaultAccount">
-                    <input type="checkbox" id="defaultAccount" name="defaultAccount">
-                    Make this my default account
-                </label>
-            
-                <button type="submit" class="btn">Create Account</button>
-            </form>
-        </div>
-    </div>
-
-    <!--New Account Modal-->
-    <div id="newBudgetModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>New Budget</h2>
-            </div>
-            
-            <form id="newAccountForm">
-                <label for="accountName">Account Name:</label>
-                <input type="text" id="accountName" name="accountName" required>
-            
-                <label for="defaultCurrency">Default Currency:</label>
-                <select id="defaultCurrency" name="defaultCurrency" required>
-                    <option value="£">£ - British Pound</option>
-                    <option value="€">€ - Euro</option>
-                </select>
-            
-                <label for="accountType">Account Type:</label>
-                <select id="accountType" name="accountType" required>
-                    <option value="personal">Personal</option>
-                    <option value="savings">Savings</option>
-                    <option value="joint">Joint</option>
-                </select>
-            
-                <!-- Joining Partner Field (Disabled unless 'Joint' is selected) -->
-                <label for="joiningPartner">Joining Partner:</label>
-                <input type="text" id="joiningPartner" name="joiningPartner" disabled>
-            
-                <label for="defaultAccount">
-                    <input type="checkbox" id="defaultAccount" name="defaultAccount">
-                    Make this my default account
-                </label>
-            
-                <button type="submit" class="btn">Create Account</button>
-            </form>
         </div>
     </div>
 

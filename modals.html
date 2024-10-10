@@ -1,0 +1,321 @@
+<link rel="stylesheet" href="modal-styling.css">
+<script src="scripts/modals.js"></script>
+
+<!--New Account Modal-->
+<div id="newAccountModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>New Account</h2>
+        </div>
+        
+        <form id="newAccountForm">
+            <label for="accountName">Name:</label>
+            <input type="text" id="accountName" name="accountName" required>
+        
+            <label for="defaultCurrency">Default Currency:</label>
+            <select id="defaultCurrency" name="defaultCurrency" required>
+                <option value="£">£ - British Pound</option>
+                <option value="€">€ - Euro</option>
+            </select>
+        
+            <label for="accountType">Type:</label>
+            <select id="accountType" name="accountType" required>
+                <option value="personal">Personal</option>
+                <option value="savings">Savings</option>
+                <option value="joint">Joint</option>
+            </select>
+        
+            <!-- Joining Partner Field (Disabled unless 'Joint' is selected) -->
+            <label for="joiningPartner">Joining Partner:</label>
+            <input type="text" id="joiningPartner" name="joiningPartner" disabled>
+        
+            <label for="defaultAccount">
+                <input type="checkbox" id="defaultAccount" name="defaultAccount">
+                Make this my default account
+            </label>
+        
+            <button type="submit" class="btn">Create Account</button>
+        </form>
+    </div>
+</div>
+
+<!--New Pot Modal-->
+<div id="newPotModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>New Pot</h2>
+        </div>
+        
+        <form id="newPotForm">
+            <label for="potName">Name:</label>
+            <input type="text" id="potName" name="potName" required>
+        
+            <label for="savingGoal">Saving Goal (£):</label>
+            <input type="number" id="savingGoal" name="savingGoal" required>
+
+            <label for="targetDate">Target Date:</label>
+            <input type="date" id="targetDate" name="targetDate">
+        
+            <label for="sharedWith">Share With:</label>
+            <select id="sharedWith" name="sharedWith">
+                <option value="" selected>-- Select Pot Partner (optional) --</option>
+                <option value="lottie">Lottie</option>
+                <option value="mam">Gayle</option>
+            </select>
+        
+            <button type="submit" class="btn">Create Pot</button>
+        </form>
+    </div>
+</div>
+
+<!--New Account Modal-->
+<div id="newBudgetModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>New Budget</h2>
+        </div>
+        
+        <form id="newBudgetForm">
+            <label for="budgetName">Name:</label>
+            <input type="text" id="budgetName" name="budgetName" required>
+        
+            <label for="budgetAmount">Budget Amount (£):</label>
+            <input type="number" id="budgetAmount" name="budgetAmount" required>
+            
+            <div class="modal-row">
+                <div class="modal-item">
+                    <label for="budgetStartDate">Start Date (optional):</label>
+                    <input type="date" id="budgetStartDate" name="budgetStartDate">
+                </div>
+
+                <div class="modal-item">
+                    <label for="budgetEndDate">End Date (optional):</label>
+                    <input type="date" id="budgetEndDate" name="budgetEndDate">
+                </div>
+            </div>
+
+            <label for="sharedWith">Share With:</label>
+            <select id="sharedWith" name="sharedWith">
+                <option value="" selected>-- Select Budget Buddy (optional) --</option>
+                <option value="lottie">Lottie</option>
+                <option value="mam">Gayle</option>
+            </select>
+        
+            <label for="activeBudget">
+                <input type="checkbox" id="activeBudget" name="activeBudget">
+                Make this my active budget
+            </label>
+        
+            <button type="submit" class="btn">Create Budget</button>
+        </form>
+    </div>
+</div>
+
+<!--Log Transaction Modal-->
+<div id="logTransactionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>New Transaction</h2>
+        </div>
+        
+        <form id="logTransactionForm">
+            <label for="transactionName">Name:</label>
+            <input type="text" id="transactionName" name="transactionName" required>
+        
+            <label for="transactionAmount">Amount (£):</label>
+            <input type="number" id="transactionAmount" name="transactionAmount" required>
+
+            <label for="transactionDate">Date (optional):</label>
+            <input type="date" id="transactionDate" name="transactionDate">
+
+            <div class="modal-row">
+                <div class="modal-item">
+                    <label for="transactionType">Type:</label>
+                    <select id="transactionType" name="transactionType" required>
+                        <option value="" selected>-- Select Type --</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                
+                <div class="modal-item">
+                    <label for="transactionCategory">Category:</label>
+                    <select id="transactionCategory" name="transactionCategory" required>
+                        <option value="" selected>-- Select Category --</option>
+                        <option value="paycheck">Pay Check</option>
+                        <option value="deposit">Deposit</option>
+                        <option value="onlineShopping">Online Shopping</option>
+                        <option value="groceries">Groceries</option>
+                        <option value="transfer">Transferring Money</option>
+                    </select>
+                </div>
+            </div>
+            
+
+            <label for="transactionAccount">Account:</label>
+            <select id="transactionAccount" name="transactionAccount" required>
+                <option value="" selected>-- Select Account --</option>
+                <option value="barclays">Barclays</option>
+                <option value="monzo">Monzo</option>
+                <option value="joint">Joint</option>
+            </select>
+        
+            <label for="recurring">
+                <input type="checkbox" id="recurring" name="recurring">
+                This transaction is recurring (will use date of transaction as recurring date)
+            </label>
+        
+            <button type="submit" class="btn">Log Transaction</button>
+        </form>
+    </div>
+</div>
+
+<!-- Recurring Transaction Modal -->
+<div id="recurringTransactionModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>New Recurring Transaction</h2>
+        </div>
+        
+        <form id="recurringTransactionForm">
+            <label for="recurringName">Name:</label>
+            <input type="text" id="recurringName" name="recurringName" required>
+        
+            <label for="recurringAmount">Amount (£):</label>
+            <input type="number" id="recurringAmount" name="recurringAmount" required>
+
+            <div class="modal-row">
+                <div class="modal-item">
+                    <label for="transactionType">Type:</label>
+                    <select id="transactionType" name="transactionType" required>
+                        <option value="" selected>-- Select Type --</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
+                    </select>
+                </div>
+                
+                <div class="modal-item">
+                    <label for="recurringInterval">Interval:</label>
+                    <select id="recurringInterval" name="recurringInterval" required>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="biweekly">Bi-weekly</option>
+                        <option value="monthly" selected>Monthly</option>
+                    </select>
+                </div>
+            </div>
+
+            <label for="transactionDate">Day:</label>
+            <select id="weeklySelect" name="weeklySelect" style="display: none;">
+                <option value="monday">Monday</option>
+                <option value="tuesday">Tuesday</option>
+                <option value="wednesday">Wednesday</option>
+                <option value="thursday">Thursday</option>
+                <option value="friday">Friday</option>
+                <option value="saturday">Saturday</option>
+                <option value="sunday">Sunday</option>
+            </select>
+            <select id="monthlySelect" name="monthlySelect">
+                <option value="" selected>-- Select Day of Month --</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+            </select>
+        
+            <button type="submit" class="btn">Log Recurring Transaction</button>
+        </form>
+    </div>
+</div>
+
+
+<!--Account Details Modal-->
+<div id="accountDetailsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Account Details</h2>
+        </div>
+        
+        <form id="logTransactionForm">
+            <label for="transactionName">Name:</label>
+            <input type="text" id="transactionName" name="transactionName" required>
+        
+            <label for="transactionAmount">Amount (£):</label>
+            <input type="number" id="transactionAmount" name="transactionAmount" required>
+
+            <label for="transactionDate">Date (optional):</label>
+            <input type="date" id="transactionDate" name="transactionDate">
+
+            <div class="modal-row">
+                <div class="modal-item">
+                    <label for="transactionType">Type:</label>
+                    <select id="transactionType" name="transactionType" required>
+                        <option value="" selected>-- Select Type --</option>
+                        <option value="in">In</option>
+                        <option value="out">Out</option>
+                    </select>
+                </div>
+                
+                <div class="modal-item">
+                    <label for="transactionCategory">Category:</label>
+                    <select id="transactionCategory" name="transactionCategory" required>
+                        <option value="" selected>-- Select Category --</option>
+                        <option value="paycheck">Pay Check</option>
+                        <option value="deposit">Deposit</option>
+                        <option value="onlineShopping">Online Shopping</option>
+                        <option value="groceries">Groceries</option>
+                        <option value="transfer">Transferring Money</option>
+                    </select>
+                </div>
+            </div>
+            
+
+            <label for="transactionAccount">Account:</label>
+            <select id="transactionAccount" name="transactionAccount" required>
+                <option value="" selected>-- Select Account --</option>
+                <option value="barclays">Barclays</option>
+                <option value="monzo">Monzo</option>
+                <option value="joint">Joint</option>
+            </select>
+        
+            <label for="recurring">
+                <input type="checkbox" id="recurring" name="recurring">
+                This transaction is recurring (will use date of transaction as recurring date)
+            </label>
+        
+            <button type="submit" class="btn">Log Transaction</button>
+        </form>
+    </div>
+</div>
