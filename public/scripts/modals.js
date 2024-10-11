@@ -205,58 +205,44 @@ function attachAccountFormEvents() {
             joiningPartnerInput.value = '';       // Clear the input if disabled
         }
     });
+}
 
-    async function fetchUsers() {
-        const token = localStorage.getItem('token');
-    
-        if (!token) {
-            console.error('No token found. User might not be authenticated.');
-            return;
-        }
-    
-        try {
-            const response = await fetch('/api/account/users', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-    
-            // Log the response status for debugging
-            console.log('Response status:', response.status);
-            
-            // Check if the response is okay
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Error response from server:', errorData);
-                throw new Error('Network response was not ok');
+async function fetchUsers() {
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('/api/users', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
             }
-    
-            const users = await response.json();
-            console.log('Fetched users:', users); // Check the structure of the users array
-    
-            // Check if users is an array
-            if (!Array.isArray(users)) {
-                throw new Error('Expected an array of users');
-            }
-    
-            // Populate the dropdown
-            const joiningPartnerSelect = document.getElementById('joiningPartner');
-            joiningPartnerSelect.innerHTML = ''; // Clear existing options
-            joiningPartnerSelect.disabled = false; // Enable the dropdown
-    
-            // Add users to the dropdown
-            users.forEach(user => {
-                const option = document.createElement('option');
-                option.value = user.id; // User ID
-                option.textContent = user.name; // Display name
-                joiningPartnerSelect.appendChild(option);
-            });
-    
-        } catch (error) {
-            console.error('Error fetching users:', error);
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-    }    
+
+        const users = await response.json();
+        console.log(users);
+
+        if (!Array.isArray(users)) {
+            throw new Error('Expected an array of users');
+        }
+
+        const joiningPartnerSelect = document.getElementById('joiningPartner');
+        joiningPartnerSelect.innerHTML = '';
+        joiningPartnerSelect.disabled = false;
+
+        users.forEach(user => {
+            const option = document.createElement('option');
+            option.value = user.id;
+            option.textContent = user.name;
+            joiningPartnerSelect.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error('Error fetching users:', error);
+    }
 }
 
 // Function to filter the users based on search input

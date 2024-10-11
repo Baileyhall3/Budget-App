@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const authRoutes = require('./routes/auth'); // Import the auth routes
-const accountRoutes = require('./routes/account'); // Import account routes
+const authRoutes = require('./routes/auth');
+const accountRoutes = require('./routes/account');
+const userRoutes = require('./routes/user');
 
 const app = express();
 
@@ -11,8 +12,10 @@ app.use(cors()); // Enable CORS if needed
 app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
 app.use(express.json()); // to handle JSON payloads
 
-app.use('/api/account', accountRoutes); // Use the account routes
-app.use('/api/auth', authRoutes); // Use the authentication routes
+// DB table routes
+app.use('/api/account', accountRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Define routes for the main page
 app.get('/', (req, res) => {
